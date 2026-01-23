@@ -92,6 +92,12 @@ body {
   @apply font-sans text-gray-800 bg-light dark:bg-dark dark:text-light;
 }
 
+=======
+/* Global Styles */
+body {
+  @apply font-sans text-gray-800 bg-light dark:bg-dark dark:text-light;
+}
+
 /* Cards */
 .card {
   @apply bg-white shadow-card rounded-xl p-4;
