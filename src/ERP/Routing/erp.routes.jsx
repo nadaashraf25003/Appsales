@@ -1,14 +1,19 @@
-import { posRoutes } from "./pos.routes";
-import { salesRoutes } from "./sales.routes";
-import { customerRoutes } from "./customers.routes";
+import { lazy } from "react";
+import { adminRoutes } from "./admin.routes";
+
+const ERPLayout = lazy(() => import("@/ERP/Views/ERPLayout"));
+const AdminLayout = lazy(() => import("@/ERP/Views/AdminLayout"));
 
 export const erpRoutes = [
   {
     path: "erp",
+    element: <ERPLayout />,
     children: [
-      ...posRoutes,
-      ...salesRoutes,
-      ...customerRoutes,
+      {
+        path: "admin",
+        element: <AdminLayout />,
+        children: adminRoutes,
+      },
     ],
   },
 ];
