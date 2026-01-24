@@ -86,23 +86,7 @@
   .dark .input {
     @apply border-gray-600 bg-dark text-light focus:ring-dark-primary;
   }
-=======
-/* Global Styles */
-body {
-  @apply font-sans text-gray-800 bg-light dark:bg-dark dark:text-light;
-}
 
-=======
-/* Global Styles */
-body {
-  @apply font-sans text-gray-800 bg-light dark:bg-dark dark:text-light;
-}
-
-=======
-/* Global Styles */
-body {
-  @apply font-sans text-gray-800 bg-light dark:bg-dark dark:text-light;
-}
 
 /* Cards */
 .card {
@@ -168,4 +152,5 @@ body {
 }
 .dark .input {
   @apply border-gray-600 bg-dark text-light focus:ring-dark-primary;
+}
 }

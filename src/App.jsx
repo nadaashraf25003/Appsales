@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // Toasts
-import ConfirmToast from "@/Components/Global/ConfirmToast";
+import ConfirmToast from "@/Components/Global/ConfirmToast.jsx";
 import { Toaster } from "react-hot-toast";
 
 // UX
