@@ -4,9 +4,9 @@ const ERPLayout = () => {
   return (
     <div className="erp-container">
       {/* If you have a Sidebar or Navbar, they go here */}
-      <aside>Sidebar</aside> 
+      {/* <aside>Sidebarnn</aside>  */}
       
-      <main>
+      <main className='bg-red-300 h-52 '>
         {/* THIS IS THE KEY: Without this, children won't show! */}
         <Outlet /> 
       </main>

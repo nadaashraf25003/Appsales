@@ -1,3 +1,3 @@
 export default function AdminLayout() {
-  return <div>Content</div>;
+  return <div>Contentjjj</div>;
 }

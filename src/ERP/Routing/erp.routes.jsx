@@ -1,8 +1,8 @@
 import { lazy } from "react";
-import { adminRoutes } from "./admin.routes";
+import { authRoutes } from "./auth.routes";
 
 const ERPLayout = lazy(() => import("@/ERP/Views/ERPLayout"));
-const AdminLayout = lazy(() => import("@/ERP/Views/AdminLayout"));
+const AuthLayout = lazy(() => import("@/ERP/Views/Auth/AuthLayout"));
 
 export const erpRoutes = [
   {
@@ -10,9 +10,9 @@ export const erpRoutes = [
     element: <ERPLayout />,
     children: [
       {
-        path: "admin",
-        element: <AdminLayout />,
-        children: adminRoutes,
+        path: "auth",
+        element: <AuthLayout />,
+        children: authRoutes,
       },
     ],
   },

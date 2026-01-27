@@ -1,0 +1,137 @@
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { userData } from "./SideNavItems/userData";
+
+// MUI Icons
+import * as Icons from "@mui/icons-material";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
+
+export default function SideNav({ sidebarOpen }) {
+  const user = userData.admin;
+  const [openSections, setOpenSections] = useState({});
+
+  const toggleSection = (section) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
+  const renderIcon = (iconName) => {
+    const IconComponent = Icons[iconName];
+    return IconComponent ? <IconComponent fontSize="small" /> : null;
+  };
+
+  return (
+    <aside
+      className={`fixed left-0 top-0 h-screen z-40 bg-white dark:bg-gray-900
+      border-r border-gray-200 dark:border-gray-700 shadow
+      transition-all duration-300
+      ${sidebarOpen ? "w-56" : "w-20"}`}
+    >
+      {/* Logo */}
+      <div className="h-14 flex items-center justify-center border-b border-gray-200 dark:border-gray-700">
+        <span className="font-bold text-lg text-primary">
+          {sidebarOpen ? "ERP Admin" : "EA"}
+        </span>
+      </div>
+
+      {/* User Info */}
+      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-3">
+          <img
+            src={user.userTopNav.avatar}
+            alt={user.userTopNav.name}
+            className="w-10 h-10 rounded-full"
+          />
+          {sidebarOpen && (
+            <div>
+              <p className="font-semibold text-md dark:text-white">{user.userTopNav.name}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-300">{user.userTopNav.role}</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="p-2 space-y-3 overflow-y-auto h-[calc(100vh-128px)]">
+        {user.sideNav.map((group) => (
+          <div key={group.section}>
+            {group.section.toLowerCase() === "main" ? (
+              /* Main Section - Always visible */
+              <div className="space-y-1">
+                {group.items.map((item) => (
+                  <NavLink
+                    key={item.title}
+                    to={item.url}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-3 py-2 rounded-lg text-sm
+                      transition-colors
+                      ${
+                        isActive
+                          ? "bg-primary/10 text-primary font-semibold"
+                          : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                      }
+                      ${!sidebarOpen && "justify-center"}`
+                    }
+                  >
+                    {renderIcon(item.icon)}
+                    {sidebarOpen && <span>{item.title}</span>}
+                  </NavLink>
+                ))}
+              </div>
+            ) : (
+              /* Other Sections - Collapsible */
+              <>
+                <button
+                  onClick={() => toggleSection(group.section)}
+                  className={`w-full flex items-center px-3 py-2 rounded-lg
+                            text-gray-600 dark:text-gray-300
+                            hover:bg-gray-100 dark:hover:bg-gray-800
+                            ${sidebarOpen ? "justify-between" : "justify-center"}`}
+                >
+                  <div className="flex items-center gap-3">
+                    {renderIcon(group.icon)}
+
+                    {sidebarOpen && (
+                      <span className="uppercase text-xs font-semibold">
+                        {group.section}
+                      </span>
+                    )}
+                  </div>
+
+                  {sidebarOpen &&
+                    (openSections[group.section] ? <ExpandLess /> : <ExpandMore />)}
+                </button>
+
+                {openSections[group.section] && (
+                  <div className="mt-1 space-y-1 ml-4">
+                    {group.items.map((item) => (
+                      <NavLink
+                        key={item.title}
+                        to={item.url}
+                        className={({ isActive }) =>
+                          `flex items-center gap-3 px-3 py-2 rounded-lg text-sm
+                          transition-colors
+                          ${
+                            isActive
+                              ? "bg-primary/10 text-primary font-semibold"
+                              : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                          }
+                          ${!sidebarOpen && "justify-center"}`
+                        }
+                      >
+                        {renderIcon(item.icon)}
+                        {sidebarOpen && <span>{item.title}</span>}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        ))}
+      </nav>
+    </aside>
+  );
+}
