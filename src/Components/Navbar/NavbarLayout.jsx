@@ -17,8 +17,9 @@ export default function DashboardLayout({ children }) {
   }, [isMdDown]);
 
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
-  const Location = useLocation().pathname.split("/").pop();
-  // console.log(Location);
+
+  // Get current path
+  const location = useLocation().pathname.split("/").pop();
   const hiddenPaths = [
     "register",
     "login",
@@ -27,50 +28,52 @@ export default function DashboardLayout({ children }) {
     "resend-verification",
     "verify-email",
   ];
-  const shouldHide = hiddenPaths.includes(Location);
-  // console.log(shouldHide);
+  const shouldHide = hiddenPaths.includes(location);
 
   return (
     <Box sx={{ display: "flex" }}>
       {/* Top Navigation */}
-      <TopNav toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
+      {!shouldHide && (
+        <TopNav toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
+      )}
 
       {/* Sidebar */}
-      {isMdDown ? (
-        // Mobile: temporary overlay drawer
-        <Drawer
-          variant="temporary"
-          open={sidebarOpen}
-          onClose={toggleSidebar}
-          ModalProps={{ keepMounted: true }}
-          sx={{
-            "& .MuiDrawer-paper": { width: 220, boxSizing: "border-box" },
-          }}
-        >
-          <SideNav sidebarOpen={true} /> {/* always fully open in Drawer */}
-        </Drawer>
-      ) : (
-        // Desktop: collapsible permanent drawer
-        <Drawer
-          variant="permanent"
-          open={sidebarOpen}
-          sx={{
-            width: sidebarOpen ? 220 : 80,
-            flexShrink: 0,
-            whiteSpace: "nowrap",
-            "& .MuiDrawer-paper": {
+      {!shouldHide &&
+        (isMdDown ? (
+          // Mobile: temporary overlay drawer
+          <Drawer
+            variant="temporary"
+            open={sidebarOpen}
+            onClose={toggleSidebar}
+            ModalProps={{ keepMounted: true }}
+            sx={{
+              "& .MuiDrawer-paper": { width: 220, boxSizing: "border-box" },
+            }}
+          >
+            <SideNav sidebarOpen={true} /> {/* always fully open in Drawer */}
+          </Drawer>
+        ) : (
+          // Desktop: collapsible permanent drawer
+          <Drawer
+            variant="permanent"
+            open={sidebarOpen}
+            sx={{
               width: sidebarOpen ? 220 : 80,
-              transition: theme.transitions.create("width", {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-              }),
-              overflowX: "hidden",
-            },
-          }}
-        >
-          <SideNav sidebarOpen={sidebarOpen} />
-        </Drawer>
-      )}
+              flexShrink: 0,
+              whiteSpace: "nowrap",
+              "& .MuiDrawer-paper": {
+                width: sidebarOpen ? 220 : 80,
+                transition: theme.transitions.create("width", {
+                  easing: theme.transitions.easing.sharp,
+                  duration: theme.transitions.duration.enteringScreen,
+                }),
+                overflowX: "hidden",
+              },
+            }}
+          >
+            <SideNav sidebarOpen={sidebarOpen} />
+          </Drawer>
+        ))}
 
       {/* Main Content */}
       <Box
@@ -82,10 +85,11 @@ export default function DashboardLayout({ children }) {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
           }),
-          marginLeft: isMdDown ? 0 : sidebarOpen ? "20px" : "0px",
+          marginLeft:
+            !shouldHide && !isMdDown ? (sidebarOpen ? "20px" : "0px") : 0,
         }}
       >
-        <Toolbar /> {/* TopNav spacer */}
+        {!shouldHide && <Toolbar />} {/* TopNav spacer */}
         {children}
       </Box>
     </Box>
