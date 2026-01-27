@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation } from "@tanstack/react-query";
 import api from "@/API/Config";
-import Urls from "@/API/URL";
+import Urls from "@/API/URLs";
 import { setToken, clearToken } from "@/API/token";
 
 /* =======================
@@ -13,12 +13,13 @@ export interface LoginData {
   password: string;
 }
 
-export interface RegisterData extends LoginData {
-  fullName: string;
-  phoneNumber: string;
-  address: string;
-  country: string;
-  gender: "male" | "female";
+export interface RegisterData {
+ name: string;
+  email: string;
+  password: string;
+  role: "TenantOwner" | "SuperAdmin" | "BranchManager" | "Cashier" | "Accountant";
+  tenantId: number;
+  branchId: number;
 }
 
 export interface ResetPasswordData {

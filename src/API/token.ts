@@ -1,11 +1,11 @@
 let accessToken: string | null = null;
 
-export const getToken = () => accessToken;
+// token.ts
+export const getToken = () => localStorage.getItem("accessToken");
 
 export const setToken = (token: string | null) => {
-  accessToken = token;
+  if (token) localStorage.setItem("accessToken", token);
+  else localStorage.removeItem("accessToken");
 };
 
-export const clearToken = () => {
-  accessToken = null;
-};
+export const clearToken = () => localStorage.removeItem("accessToken");

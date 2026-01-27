@@ -27,6 +27,7 @@ export default function DashboardLayout({ children }) {
     "reset-password",
     "resend-verification",
     "verify-email",
+    "auth",
   ];
   const shouldHide = hiddenPaths.includes(location);
 

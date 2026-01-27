@@ -52,7 +52,7 @@ export default function App() {
 
           {/* Global Notifications */}
           {/* <ConfirmToast /> */}
-          <Toaster toastOptions={{ duration: 5000 }} />
+          <Toaster toastOptions={{ duration: 5000 ,  className: "dark:bg-dark dark:text-light", }} position="top-right"  />
         </div>
 
         {/* Dev Tools (only shows during npm run dev) */}
