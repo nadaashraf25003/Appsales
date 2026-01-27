@@ -225,7 +225,7 @@ const Register = () => {
           </div> */}
           {/* Role */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Role
             </label>
             <select {...register("role")} className="input">
@@ -243,9 +243,10 @@ const Register = () => {
 
           {/* Tenant ID */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Tenant ID
+             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+               Tenant ID
             </label>
+           
             <input
               {...register("tenantId", { valueAsNumber: true })}
               type="number"
@@ -259,7 +260,8 @@ const Register = () => {
 
           {/* Branch ID */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+           
+             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Branch ID
             </label>
             <input
