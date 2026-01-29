@@ -1,0 +1,178 @@
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { userData } from "./SideNavItems/userData";
+
+// UI Functional Icons (Direct Path)
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+
+// Navigation Icons (Direct Path)
+import Dashboard from "@mui/icons-material/Dashboard";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Analytics from "@mui/icons-material/Analytics";
+import Notifications from "@mui/icons-material/Notifications";
+import PointOfSale from "@mui/icons-material/PointOfSale";
+import ShoppingCart from "@mui/icons-material/ShoppingCart";
+import AssignmentReturn from "@mui/icons-material/AssignmentReturn";
+import People from "@mui/icons-material/People";
+import Inventory from "@mui/icons-material/Inventory";
+import Category from "@mui/icons-material/Category";
+import LocalShipping from "@mui/icons-material/LocalShipping";
+import AccountBalance from "@mui/icons-material/AccountBalance";
+import Receipt from "@mui/icons-material/Receipt";
+import Assessment from "@mui/icons-material/Assessment";
+import BarChart from "@mui/icons-material/BarChart";
+import Settings from "@mui/icons-material/Settings";
+import Paid from "@mui/icons-material/Paid";
+import Group from "@mui/icons-material/Group";
+import Apartment from "@mui/icons-material/Apartment";
+
+/**
+ * iconMap connects the string values in userData.ts 
+ * to the actual Material UI Icon components.
+ */
+const iconMap = {
+  Dashboard,
+  AccountCircle,
+  Analytics,
+  Notifications,
+  PointOfSale,
+  ShoppingCart,
+  AssignmentReturn,
+  People,
+  Inventory,
+  Category,
+  LocalShipping,
+  AccountBalance,
+  Receipt,
+  Assessment,
+  BarChart,
+  Settings,
+  Paid,
+  Group,
+  Apartment
+};
+
+export default function SideNav({ sidebarOpen }) {
+  const user = userData.admin;
+  const [openSections, setOpenSections] = useState({});
+
+  const toggleSection = (section) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
+  const renderIcon = (iconName) => {
+    const IconComponent = iconMap[iconName];
+    return IconComponent ? <IconComponent fontSize="small" /> : null;
+  };
+
+  return (
+    <aside
+      className={`fixed left-0 top-0 h-screen z-40 bg-white dark:bg-gray-900
+      border-r border-gray-200 dark:border-gray-700 shadow
+      transition-all duration-300
+      ${sidebarOpen ? "w-56" : "w-20"}`}
+    >
+      {/* Logo Section */}
+      <div className="h-14 flex items-center justify-center border-b border-gray-200 dark:border-gray-700">
+        <span className="font-bold text-lg text-primary">
+          {sidebarOpen ? "ERP Admin" : "EA"}
+        </span>
+      </div>
+
+      {/* User Info Section */}
+      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-3">
+          <img
+            src={user.userTopNav.avatar}
+            alt={user.userTopNav.name}
+            className="w-10 h-10 rounded-full object-cover border border-gray-100 dark:border-gray-800"
+          />
+          {sidebarOpen && (
+            <div className="overflow-hidden">
+              <p className="font-semibold text-sm dark:text-white truncate">
+                {user.userTopNav.name}
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-300 truncate">
+                {user.userTopNav.role}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Navigation Links */}
+      <nav className="p-2 space-y-3 overflow-y-auto h-[calc(100vh-128px)] custom-scrollbar">
+        {user.sideNav.map((group) => (
+          <div key={group.section}>
+            {/* Simple Link for "Main" section, Collapsible for others */}
+            {group.section.toLowerCase() === "main" ? (
+              <div className="space-y-1">
+                {group.items.map((item) => (
+                  <NavLink
+                    key={item.title}
+                    to={item.url}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors
+                      ${isActive ? "bg-primary/10 text-primary font-semibold" : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"}
+                      ${!sidebarOpen && "justify-center"}`
+                    }
+                  >
+                    {renderIcon(item.icon)}
+                    {sidebarOpen && <span>{item.title}</span>}
+                  </NavLink>
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-1">
+                {/* Section Header / Toggle Button */}
+                <button
+                  onClick={() => toggleSection(group.section)}
+                  className={`w-full flex items-center px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300
+                            hover:bg-gray-100 dark:hover:bg-gray-800 transition-all
+                            ${sidebarOpen ? "justify-between" : "justify-center"}`}
+                >
+                  <div className="flex items-center gap-3">
+                    {renderIcon(group.icon)}
+                    {sidebarOpen && (
+                      <span className="uppercase text-[10px] tracking-wider font-bold">
+                        {group.section}
+                      </span>
+                    )}
+                  </div>
+                  {sidebarOpen && (
+                    <div className="transition-transform duration-200">
+                      {openSections[group.section] ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
+                    </div>
+                  )}
+                </button>
+
+                {/* Dropdown Items (Only if sidebar is open and section is toggled) */}
+                {openSections[group.section] && sidebarOpen && (
+                  <div className="mt-1 space-y-1 ml-4 border-l-2 border-gray-100 dark:border-gray-800 pl-2">
+                    {group.items.map((item) => (
+                      <NavLink
+                        key={item.title}
+                        to={item.url}
+                        className={({ isActive }) =>
+                          `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors
+                          ${isActive ? "bg-primary/10 text-primary font-semibold" : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"}`
+                        }
+                      >
+                        {renderIcon(item.icon)}
+                        <span>{item.title}</span>
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </nav>
+    </aside>
+  );
+}
