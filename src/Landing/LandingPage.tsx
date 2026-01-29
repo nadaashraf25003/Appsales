@@ -33,7 +33,7 @@ export default function ERPLandingPage() {
       icon: <ShoppingCart className="w-8 h-8" />, 
       title: "POS System", 
       desc: "Modern point-of-sale with offline mode, receipt printing, and fast checkout", 
-      link: "/pos",
+      link: "/erp/sales/pos",
       color: "from-primary to-secondary",
       stats: "Fast checkout",
       highlight: true
@@ -42,7 +42,7 @@ export default function ERPLandingPage() {
       icon: <Package className="w-8 h-8" />, 
       title: "Inventory", 
       desc: "Real-time stock tracking, low inventory alerts, bundles management", 
-      link: "/erp/inventory",
+      link: "/erp/dashboard/home",
       color: "from-info to-primary",
       stats: "Real-time"
     },
@@ -50,7 +50,7 @@ export default function ERPLandingPage() {
       icon: <BarChart3 className="w-8 h-8" />, 
       title: "Analytics", 
       desc: "Advanced sales analytics, financial reports, and business insights", 
-      link: "/erp/analytics",
+      link: "/erp/dashboard/analytics",
       color: "from-success to-info",
       stats: "AI Insights"
     },
@@ -58,7 +58,7 @@ export default function ERPLandingPage() {
       icon: <Users className="w-8 h-8" />, 
       title: "CRM", 
       desc: "Complete customer management with loyalty programs and segmentation", 
-      link: "/erp/customers",
+      link: "/erp/sales/customers",
       color: "from-warning to-success",
       stats: "360° View"
     },
@@ -74,7 +74,7 @@ export default function ERPLandingPage() {
       icon: <Receipt className="w-8 h-8" />, 
       title: "Billing", 
       desc: "Automated invoicing, recurring billing, payment tracking", 
-      link: "/erp/billing",
+      link: "/erp/dashboard/home",
       color: "from-info to-success",
       stats: "Auto Invoice"
     },
@@ -82,7 +82,7 @@ export default function ERPLandingPage() {
       icon: <Settings className="w-8 h-8" />, 
       title: "Configuration", 
       desc: "System settings, user roles, permissions, and custom workflows", 
-      link: "/erp/settings",
+      link: "/erp/dashboard/home",
       color: "from-gray-500 to-gray-700",
       stats: "Flexible"
     },
@@ -90,7 +90,7 @@ export default function ERPLandingPage() {
       icon: <Database className="w-8 h-8" />, 
       title: "Data Management", 
       desc: "Import/export tools, automated backups, data migration", 
-      link: "/erp/data",
+      link: "/erp/dashboard/home",
       color: "from-secondary to-warning",
       stats: "Secure"
     },

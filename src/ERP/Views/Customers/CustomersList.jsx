@@ -1,12 +1,23 @@
-import React from 'react';
-import { Table, Button, Input, Card, Space, Tag, Typography } from 'antd';
+import React, { useState } from 'react';
+import { Table, Button, Input, Card, Space, Tag, Typography, Spin } from 'antd';
 import { UserAddOutlined, SearchOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import useCustomers from '@/Hooks/useCustomers';
 
 const { Title, Text } = Typography;
 
 const CustomersList = () => {
   const navigate = useNavigate();
+  const { getAllCustomersQuery } = useCustomers();
+  const { data: customers, isLoading, isError } = getAllCustomersQuery();
+
+  const [search, setSearch] = useState('');
+
+  const filteredData = customers?.filter((c) =>
+    c.name.toLowerCase().includes(search.toLowerCase()) ||
+    (c.phone || '').includes(search) ||
+    (c.email || '').toLowerCase().includes(search.toLowerCase())
+  );
 
   const columns = [
     {
@@ -20,7 +31,7 @@ const CustomersList = () => {
     { 
       title: 'Type', 
       dataIndex: 'type', 
-      render: (type) => <Tag color={type === 'Premium' ? 'gold' : 'blue'}>{type}</Tag> 
+      render: (type) => <Tag color={type === 'Premium' ? 'gold' : 'blue'}>{type || 'Regular'}</Tag> 
     },
     {
       title: 'Actions',
@@ -42,6 +53,9 @@ const CustomersList = () => {
     },
   ];
 
+  if (isLoading) return <Spin size="large" className="m-6" />;
+  if (isError) return <div className="text-red-500 p-6">Failed to load customers.</div>;
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
@@ -62,10 +76,17 @@ const CustomersList = () => {
             prefix={<SearchOutlined />} 
             placeholder="Search by name, phone or email..." 
             className="max-w-md h-10"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <Button className="h-10">Filters</Button>
         </div>
-        <Table columns={columns} dataSource={[]} locale={{ emptyText: 'No customers found' }} />
+        <Table 
+          columns={columns} 
+          dataSource={filteredData || []} 
+          rowKey="id"
+          locale={{ emptyText: 'No customers found' }} 
+        />
       </Card>
     </div>
   );

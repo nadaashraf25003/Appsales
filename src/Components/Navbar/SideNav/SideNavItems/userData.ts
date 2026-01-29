@@ -1,9 +1,24 @@
 import DefaultProfilePic from "@/assets/default-avatar.png";
 
-const UserName = "shadcn";
-const userEmail = "m@example.com";
-const userRole = "Admin";
+interface User {
+  name: string;
+  email: string;
+  role: string;
+}
 
+let user: User | null = null;
+try {
+  const userString = localStorage.getItem("user");
+  user = userString ? JSON.parse(userString) : null;
+} catch (error) {
+  console.error("Error parsing user from localStorage:", error);
+}
+
+const UserName = user?.name || "shadcn";
+const userEmail = user?.email || "m@example.com";
+const userRole = user?.role || "Admin";
+
+console.log("user", user);
 export const userData = {
   admin: {
     userTopNav: {
@@ -12,7 +27,7 @@ export const userData = {
       avatar: DefaultProfilePic,
       role: userRole,
       items: [
-        { title: "Dashboard", url: "/erp" },
+        // { title: "Dashboard", url: "/erp" },
         { title: "Profile", url: "/erp/profile" },
         { title: "Notifications", url: "/erp/notifications" },
         { title: "Logout", url: "/logout" },
@@ -24,20 +39,54 @@ export const userData = {
         section: "Main",
         icon: "Dashboard",
         items: [
-          { title: "Dashboard", icon: "Dashboard", url: "/erp" },
+          // { title: "Dashboard", icon: "Dashboard", url: "/erp" },
           { title: "Profile", icon: "AccountCircle", url: "/erp/profile" },
-          { title: "Analytics", icon: "Analytics", url: "/erp/dashboard/analytics" },
-          { title: "Activities", icon: "Notifications", url: "/erp/dashboard/activities" },
+          {
+            title: "Analytics",
+            icon: "Analytics",
+            url: "/erp/dashboard/analytics",
+          },
+          {
+            title: "Activities",
+            icon: "Notifications",
+            url: "/erp/dashboard/activities",
+          },
         ],
       },
 
+      {
+        section: "Dashboard",
+        icon: "Dashboard",
+        items: [
+          { title: "Home", icon: "PointOfSale", url: "/erp/dashboard/home" },
+          {
+            title: "Sales Chart",
+            icon: "ShoppingCart",
+            url: "/erp/dashboard/sales-chart",
+          },
+          {
+            title: "Recent Orders",
+            icon: "AssignmentReturn",
+            url: "/erp/dashboard/recent-orders",
+          },
+          {
+            title: "Activities",
+            icon: "People",
+            url: "/erp/dashboard/activities",
+          },
+        ],
+      },
       {
         section: "Sales",
         icon: "ShoppingCart",
         items: [
           { title: "POS", icon: "PointOfSale", url: "/erp/sales/pos" },
           { title: "Orders", icon: "ShoppingCart", url: "/erp/sales/orders" },
-          { title: "Returns", icon: "AssignmentReturn", url: "/erp/sales/returns" },
+          {
+            title: "Returns",
+            icon: "AssignmentReturn",
+            url: "/erp/sales/returns",
+          },
           { title: "Customers", icon: "People", url: "/erp/sales/customers" },
         ],
       },
@@ -47,8 +96,16 @@ export const userData = {
         icon: "Inventory",
         items: [
           { title: "Products", icon: "Inventory", url: "/erp/inventory/items" },
-          { title: "Categories", icon: "Category", url: "/erp/inventory/categories" },
-          { title: "Suppliers", icon: "LocalShipping", url: "/erp/inventory/suppliers" },
+          {
+            title: "Categories",
+            icon: "Category",
+            url: "/erp/inventory/categories",
+          },
+          {
+            title: "Suppliers",
+            icon: "LocalShipping",
+            url: "/erp/inventory/suppliers",
+          },
         ],
       },
 
@@ -56,10 +113,36 @@ export const userData = {
         section: "Accounting",
         icon: "AccountBalance",
         items: [
-          { title: "Dashboard", icon: "AccountBalance", url: "/erp/accounting" },
-          { title: "Expenses", icon: "Receipt", url: "/erp/accounting/expenses" },
-          { title: "Reports", icon: "Assessment", url: "/erp/accounting/reports" },
-          { title: "Statements", icon: "BarChart", url: "/erp/accounting/statements" },
+          {
+            title: "Dashboard",
+            icon: "AccountBalance",
+            url: "/erp/accounting",
+          },
+          {
+            title: "Expenses",
+            icon: "Receipt",
+            url: "/erp/accounting/expenses",
+          },
+          {
+            title: "Reports",
+            icon: "Assessment",
+            url: "/erp/accounting/reports",
+          },
+          {
+            title: "Statements",
+            icon: "BarChart",
+            url: "/erp/accounting/statements",
+          },
+        ],
+      },
+      {
+        section: "Organization",
+        icon: "Apartment",
+        items: [
+          { title: "Branches", icon: "Add", url: "/erp/branches" },
+          { title: "Create Branch", icon: "Add", url: "/erp/branches/create" },
+          { title: "Tenants", icon: "Domain", url: "/erp/tenants" },
+          { title: "Create Tenant", icon: "Add", url: "/erp/tenants/create" },
         ],
       },
 
@@ -70,7 +153,11 @@ export const userData = {
           { title: "General", icon: "Settings", url: "/erp/settings/general" },
           { title: "Financial", icon: "Paid", url: "/erp/settings/financial" },
           { title: "Users", icon: "Group", url: "/erp/settings/users" },
-          { title: "Organization", icon: "Apartment", url: "/erp/settings/organization" },
+          // {
+          //   title: "Organization",
+          //   icon: "Apartment",
+          //   url: "/erp/settings/organization",
+          // },
         ],
       },
     ],

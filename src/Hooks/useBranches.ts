@@ -12,6 +12,9 @@ export interface BranchDto {
   name: string;
   tenantId: number;
   isActive: boolean;
+  address: string;
+  phone: string;
+  email: string;
   // add other branch fields if needed
 }
 
@@ -20,10 +23,13 @@ export interface CreateBranchData {
   tenantId: number;
 }
 
-export interface UpdateBranchData extends CreateBranchData {
-  id: number;
+export interface UpdateBranchData {
+  branchId: number; // matches backend
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
 }
-
 /* =======================
    Hook
 ======================= */

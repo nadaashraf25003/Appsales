@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import api from "@/API/Config";
 import Urls from "@/API/URLs";
 
@@ -78,12 +78,24 @@ const useExpenses = () => {
     },
   });
 
+  const getAllExpensesQuery = (tenantId: number) =>
+  useQuery({
+    queryKey: ["expenses", tenantId],
+    queryFn: async () => {
+      const res = await api.get(Urls.EXPENSES.GET_ALL, {
+        params: { tenantId },
+      });
+      return res.data;
+    },
+    enabled: !!tenantId,
+  });
   return {
     getAllExpensesMutation,
     getExpenseByIdMutation,
     createExpenseMutation,
     updateExpenseMutation,
     deleteExpenseMutation,
+    getAllExpensesQuery,
   };
 };
 

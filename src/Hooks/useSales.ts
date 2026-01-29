@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import api from "@/API/Config";
 import Urls from "@/API/URLs";
 
@@ -28,7 +28,6 @@ export interface UpdateOrderData {
     notes: string;
   }>;
 }
-
 
 export interface CancelOrderData {
   id: number;
@@ -75,17 +74,16 @@ const useSales = () => {
   });
 
   // Cancel Order
-const cancelOrderMutation = useMutation({
-  mutationFn: async (data: CancelOrderData) => {
-    const res = await api.post(Urls.SALES.CANCEL_ORDER, data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return res.data;
-  },
-});
-
+  const cancelOrderMutation = useMutation({
+    mutationFn: async (data: CancelOrderData) => {
+      const res = await api.post(Urls.SALES.CANCEL_ORDER, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return res.data;
+    },
+  });
 
   // Get Order by ID
   const getOrderByIdMutation = useMutation({
@@ -107,7 +105,10 @@ const cancelOrderMutation = useMutation({
   const getOrdersByBranchAndStatusMutation = useMutation({
     mutationFn: async (params: { branchId: number; status: string }) => {
       const res = await api.get(
-        Urls.SALES.GET_ORDERS_BY_BRANCH_AND_STATUS(params.branchId, params.status)
+        Urls.SALES.GET_ORDERS_BY_BRANCH_AND_STATUS(
+          params.branchId,
+          params.status,
+        ),
       );
       return res.data;
     },
@@ -122,12 +123,22 @@ const cancelOrderMutation = useMutation({
   });
 
   // Get All Orders
-const getAllOrdersMutation = useMutation({
-  mutationFn: async () => {
-    const res = await api.get(Urls.SALES.GET_ALL_ORDERS);
-    return res.data;
-  },
-});
+  const getAllOrdersMutation = useMutation({
+    mutationFn: async () => {
+      const res = await api.get(Urls.SALES.GET_ALL_ORDERS);
+      return res.data;
+    },
+  });
+
+  const getOrdersByTenantQuery = (tenantId: number) =>
+  useQuery({
+    queryKey: ["orders", "tenant", tenantId],
+    queryFn: async () => {
+      const res = await api.get(Urls.SALES.GET_ORDERS_BY_TENANT(tenantId));
+      return res.data;
+    },
+    enabled: !!tenantId,
+  });
   return {
     createOrderMutation,
     updateOrderMutation,
@@ -137,6 +148,8 @@ const getAllOrdersMutation = useMutation({
     getOrdersByBranchAndStatusMutation,
     getOrdersByTenantMutation,
     getAllOrdersMutation,
+
+    getOrdersByTenantQuery,
   };
 };
 

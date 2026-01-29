@@ -22,7 +22,7 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 // Import Dropdown component and items
 import Dropdown from "@/Components/Global/Dropdown";
 import { mailItems, notificationItems, profileItems } from "./DropdownItems";
-import { clearToken } from "@/API/token"; 
+import { clearToken } from "@/API/token";
 import { useNavigate } from "react-router-dom";
 
 // Styled Search Components
@@ -79,6 +79,7 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
   // Logout handler
   const handleLogout = () => {
     clearToken(); // Remove accessToken from localStorage
+    localStorage.removeItem("user"); // Remove user data
     setOpenDropdown(null); // Close dropdown
     window.dispatchEvent(new Event("storage")); // Notify other components
     navigate("/"); // Redirect to login
@@ -104,7 +105,10 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
             onClick={toggleSidebar}
             className="mr-4 p-2 rounded-lg bg-gray-900 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
           >
-            <MenuOpenIcon className="text-gray-800 dark:text-white" fontSize="medium" />
+            <MenuOpenIcon
+              className="text-gray-800 dark:text-white"
+              fontSize="medium"
+            />
           </IconButton>
 
           <Typography
@@ -181,11 +185,20 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
             <Dropdown
               isOpen={openDropdown === "profile"}
               onClose={() => setOpenDropdown(null)}
-              items={profileItems.map(item =>
-                item.label === "Logout"
-                  ? { ...item, onClick: handleLogout } // Attach logout handler
-                  : item
-              )}
+              items={profileItems.map((item) => {
+                if (item.label === "Logout") {
+                  return { ...item, onClick: handleLogout }; // keep logout handler
+                } else if (item.label === "Profile" && item.url) {
+                  return {
+                    ...item,
+                    onClick: () => {
+                      setOpenDropdown(null); // close dropdown
+                      navigate(item.url); // redirect to profile page
+                    },
+                  };
+                }
+                return item;
+              })}
             />
           </div>
         </Box>

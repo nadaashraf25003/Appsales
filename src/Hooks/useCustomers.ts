@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import api from "@/API/Config";
 import Urls from "@/API/URLs";
 
@@ -81,7 +81,14 @@ const useCustomers = () => {
       return res.data;
     },
   });
-
+const getAllCustomersQuery = () =>
+  useQuery({
+    queryKey: ["customers"],
+    queryFn: async () => {
+      const res = await api.get(Urls.CUSTOMERS.GET_ALL);
+      return res.data;
+    },
+  });
   return {
     createCustomerMutation,
     updateCustomerMutation,
@@ -89,6 +96,8 @@ const useCustomers = () => {
     getCustomerByIdMutation,
     getCustomerStatementMutation,
     getAllCustomersMutation,
+
+    getAllCustomersQuery,
   };
 };
 

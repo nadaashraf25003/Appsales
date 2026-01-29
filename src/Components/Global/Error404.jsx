@@ -11,7 +11,7 @@ const Error404 = () => {
 
   const quickLinks = [
     { label: 'Home', path: '/', icon: Home },
-    { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Dashboard', path: '/erp/dashboard/home' },
     { label: 'Settings', path: '/settings' },
     { label: 'Help Center', path: '/help' },
   ];
