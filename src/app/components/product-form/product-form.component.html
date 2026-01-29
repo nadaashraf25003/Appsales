@@ -1,0 +1,22 @@
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()" >
+
+    <div class="mb-3">
+        <label for="name-label" class="form-label">Product Name</label>
+        <input type="text" formControlName="name" class="form-control" id="name-input" placeholder="Rice">
+    </div>
+    <div class="mb-3">
+        <label for="qtd-label" class="form-label">Quantity</label>
+        <input type="number" formControlName="quantity" class="form-control" id="qtd-input" placeholder="12">
+    </div>
+    <div class="mb-3">
+        <label for="price-label" class="form-label">Price</label>
+        <input type="number" formControlName="price" class="form-control" id="price-input" placeholder="12.9">
+    </div>
+    <div class="mb-3">
+        <label for="description-label" class="form-label">Description</label>
+        <textarea class="form-control" formControlName="description" id="description" rows="3"></textarea>
+    </div>
+
+    <button type="submit" [disabled]="!productForm.valid" data-bs-dismiss="modal" class="btn btn-primary">Submit</button>
+
+</form>

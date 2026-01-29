@@ -1,0 +1,22 @@
+table{
+    width: 100%;
+}
+
+.button-container{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-button{
+    margin-right: 120px;
+}
+
+h5{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}

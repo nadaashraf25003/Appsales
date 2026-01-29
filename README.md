@@ -1,21 +1,102 @@
+# 🛒 Inventory Management System
 
-# Appsales
-=======
-=======
+                                                                                                                                      
 
-# React + Vite
+An **Inventory Management System** built using **Angular 19** and **NgRx** to manage products efficiently. This project integrates with a **Spring Boot** backend and provides a fully functional CRUD (Create, Read, Update, Delete) interface for managing inventory.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📋 **View Products**: List all products in the inventory.
+- ➕ **Add Products**: Easily add new items to the inventory.
+- ✏️ **Update Products**: Modify product details such as name, price, stock, and description.
+- ❌ **Delete Products**: Remove unwanted products from the inventory.
+- 🛠️ **State Management with NgRx**: Implements actions, reducers, selectors, and effects for seamless state handling.
+- 🌐 **Backend Integration**: Communicates with a Spring Boot API for real-time data operations.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+### Frontend
+- **Angular 19**
+- **NgRx** for state management
+- **Bootstrap** for styling
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Backend
+- **Spring Boot**
+- **REST API**
+
+---
+
+## 📁 Project Structure
+
+### Angular Folder Structure
+
+```plaintext
+src/
+├── app/
+│   ├── components/
+│   │   ├── product/
+│   │   │   ├── product.component.ts
+│   │   │   ├── product.component.html
+│   │   │   ├── product.component.css
+│   ├── models/
+│   │   ├── product.model.ts
+│   ├── services/
+│   │   ├── product.service.ts
+│   ├── store/
+│   │   ├── product.actions.ts
+│   │   ├── product.reducer.ts
+│   │   ├── product.selectors.ts
+│   │   ├── product.effects.ts
+│   ├── app.module.ts
+│   ├── app.component.ts
+│   ├── app.component.html
+
+```
+
+---
+
+## 🏗️ Installation and Setup
+
+Follow these steps to set up the project locally:
+
+### Frontend
+
+1. Clone the repository:
+
+```bash
+
+    git clone https://github.com/Mauro-Pereira/inventory-front-end.git
+    cd inventory-front-end
+```
+
+2. Install dependencies:
+
+```bash
+    npm install
+```
+
+3. Start the Angular application:
+ 
+ ```bash
+    ng serve
+```
+
+4. Navigate to http://localhost:4200
+
+### back-end
+
+1. Set up Spring Boot project making clone here: https://github.com/Mauro-Pereira/inventory-back-end
+
+2. Run the application:
+
+```bash
+    docker compose up
+```
+
+3. Backend will be available at http://localhost:8080.
+ ```
+   By Kareem Mohamed

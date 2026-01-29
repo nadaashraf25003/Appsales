@@ -1,0 +1,17 @@
+h3 {
+    color: white;
+  }
+  
+  nav {
+    margin-bottom: 30px;
+  }
+  
+  footer {
+    color: white;
+    background-color: rgb(13, 110, 253);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+  }
+  
