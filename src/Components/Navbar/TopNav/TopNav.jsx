@@ -21,6 +21,8 @@ import { MenuOpen as MenuOpenIcon } from "@mui/icons-material";
 // Import Dropdown component and items
 import Dropdown from "@/Components/Global/Dropdown";
 import { mailItems, notificationItems, profileItems } from "./DropdownItems";
+import { clearToken } from "@/API/token"; 
+import { useNavigate } from "react-router-dom";
 
 // Styled Search Components
 const Search = styled("div")(({ theme }) => ({
@@ -66,9 +68,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function TopNav({ toggleSidebar, sidebarOpen }) {
   const [openDropdown, setOpenDropdown] = useState(null);
+  const navigate = useNavigate();
 
+  // Toggle dropdown menus
   const handleToggleDropdown = (type) => {
     setOpenDropdown(openDropdown === type ? null : type);
+  };
+
+  // Logout handler
+  const handleLogout = () => {
+    clearToken(); // Remove accessToken from localStorage
+    setOpenDropdown(null); // Close dropdown
+    window.dispatchEvent(new Event("storage")); // Notify other components
+    navigate("/"); // Redirect to login
   };
 
   return (
@@ -83,7 +95,7 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
       className="dark:bg-gray-900 dark:text-light"
     >
       <Toolbar className="justify-between">
-        {/* Left Side */}
+        {/* Left Side: Menu & Brand */}
         <div className="flex items-center">
           <IconButton
             edge="start"
@@ -118,7 +130,7 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
           </Search>
         </Box>
 
-        {/* Right Side */}
+        {/* Right Side Icons */}
         <Box className="flex items-center space-x-2 relative">
           {/* Mail */}
           <div className="relative">
@@ -127,7 +139,7 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
               className="text-gray-600 dark:text-gray-300"
               onClick={() => handleToggleDropdown("mail")}
             >
-              <Badge badgeContent={mailItems[0].badge} color="error">
+              <Badge badgeContent={mailItems[0]?.badge} color="error">
                 <MailIcon />
               </Badge>
             </IconButton>
@@ -145,7 +157,7 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
               className="text-gray-600 dark:text-gray-300"
               onClick={() => handleToggleDropdown("notifications")}
             >
-              <Badge badgeContent={notificationItems[0].badge} color="error">
+              <Badge badgeContent={notificationItems[0]?.badge} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -168,7 +180,11 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
             <Dropdown
               isOpen={openDropdown === "profile"}
               onClose={() => setOpenDropdown(null)}
-              items={profileItems}
+              items={profileItems.map(item =>
+                item.label === "Logout"
+                  ? { ...item, onClick: handleLogout } // Attach logout handler
+                  : item
+              )}
             />
           </div>
         </Box>

@@ -1,11 +1,11 @@
-import { authRoutes } from "./auth.routes";
-
-
 import { lazy, Suspense } from "react";
 import Loader from "@/Components/Global/Loader";
+import { authRoutes } from "./auth.routes";
+import { dashboardRoutes } from "./dashboard.routes";
 
+// Lazy load ERP layout
 const ERPLayout = lazy(() => import("@/ERP/Views/ERPLayout"));
-const AuthLayout = lazy(() => import("@/ERP/Views/Auth/AuthLayout.tsx"));
+const AuthLayout = lazy(() => import("@/ERP/Views/Auth/AuthLayout"));
 
 export const erpRoutes = [
   {
@@ -16,6 +16,7 @@ export const erpRoutes = [
       </Suspense>
     ),
     children: [
+      // Auth routes (login, register, forgot, etc.)
       {
         path: "auth",
         element: (
@@ -25,6 +26,9 @@ export const erpRoutes = [
         ),
         children: authRoutes,
       },
+
+      // Dashboard routes
+      ...dashboardRoutes,
     ],
   },
 ];

@@ -5,8 +5,9 @@ import { z } from "zod";
 import useAuth from "@/Hooks/useAuth";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import {Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { setToken } from "@/API/token";
 type LoginForm = z.infer<typeof loginSchema>;
 
 const Login = () => {
@@ -29,13 +30,26 @@ const Login = () => {
   const onSubmit = (data: LoginForm) => {
     loginMutation.mutate(data, {
       onSuccess: (res) => {
-      console.log("Response from backend:", res); // <-- log backend response
-      toast.success("Logged in successfully");
-      navigate("/erp");
-    },
+        console.log("Response from backend:", res);
+
+        // 1. Store token
+        if (res.accessToken) {
+          setToken(res.accessToken);
+          console.log("Token stored successfully.");
+          // Optional: dispatch event to update NavBar dynamically
+          window.dispatchEvent(new Event("storage"));
+        }
+
+        // 2. Notify user
+        toast.success("Logged in successfully");
+
+        // 3. Navigate to ERP dashboard
+        navigate("/erp");
+      },
       onError: () => toast.error("Invalid credentials"),
     });
   };
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

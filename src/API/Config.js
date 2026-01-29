@@ -33,6 +33,7 @@ api.interceptors.response.use(
         const newToken = res.data.token;
 
         setToken(newToken);
+        console.log(newToken)
 
         error.config.headers.Authorization = `Bearer ${newToken}`;
         return api.request(error.config);

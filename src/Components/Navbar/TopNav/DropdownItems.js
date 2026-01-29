@@ -26,5 +26,5 @@ export const notificationItems = [
 export const profileItems = [
   { label: "Profile", icon: PersonIcon, onClick: () => console.log("Profile clicked") },
   { label: "Settings", icon: SettingsIcon, onClick: () => console.log("Settings clicked") },
-  { label: "Logout", icon: LogoutIcon, onClick: () => console.log("Logout clicked"), variant: "danger" },
+  { label: "Logout", icon: LogoutIcon, onClick:null, variant: "danger" },
 ];

@@ -46,9 +46,9 @@ export default function App() {
           <ScrollToTop />
 
           {/* Dashboard Layout */}
-          <NavbarLayout>
+          {/* <NavbarLayout> */}
             <Outlet /> {/* Routes render here */}
-          </NavbarLayout>
+          {/* </NavbarLayout> */}
 
           {/* Global Notifications */}
           {/* <ConfirmToast /> */}

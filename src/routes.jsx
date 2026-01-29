@@ -9,12 +9,14 @@ import { ecommerceRoutes } from "./E-commerce/Routing/ecommerce.routes";
 // UI Components
 import Loader from "./Components/Global/Loader.jsx";
 const Error404 = lazy(() => import("./Components/Global/Error404"));
+const Landing = lazy(() => import("./Landing/LandingPage"));
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />, // App.jsx wraps all children below
     children: [
+      { index: true, element: <Landing /> },
       // 1. E-commerce Module Routes
       ...ecommerceRoutes,
       

@@ -24,7 +24,7 @@ export const userData = {
         section: "Main",
         icon: "Dashboard",
         items: [
-          { title: "Dashboard", icon: "Dashboard", url: "/dashboard" },
+          // { title: "Dashboard", icon: "Dashboard", url: "/erp/dashboard" },
           { title: "Profile", icon: "AccountCircle", url: "/profile" },
           {
             title: "Analytics",
@@ -39,6 +39,16 @@ export const userData = {
         ],
       },
 
+      {
+        section: "Dashboard",
+        icon: "Dashboard",
+        items: [
+          { title: "Home", icon: "PointOfSale", url: "/erp/dashboard/home" },
+          { title: "Sales Chart", icon: "ShoppingCart", url: "/erp/dashboard/sales-chart" },
+          { title: "Recent Orders", icon: "AssignmentReturn", url: "/erp/dashboard/recent-orders" },
+          { title: "Activities", icon: "People", url: "/erp/dashboard/activities" },
+        ],
+      },
       {
         section: "Sales",
         icon: "ShoppingCart",
