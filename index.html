@@ -2,72 +2,79 @@
 <html lang="en" dir="ltr">
 
 <head>
-  <!-- Basic Meta -->
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Title (VERY IMPORTANT for SEO) -->
-  <title>AppSales | ERP & E-Commerce Management System</title>
-
-  <!-- Description -->
-  <meta name="description"
-    content="AppSales is a modern ERP and E-commerce management system for sales, inventory, users, payments, and analytics." />
-
-  <!-- Keywords (still useful for internal search & some engines) -->
-  <meta name="keywords"
-    content="ERP system, E-commerce platform, sales management, inventory system, admin dashboard" />
-
-  <!-- Author -->
+  <title>AppSales | ERP & E-Commerce System</title>
+  <meta name="description" content="Modern ERP and E-commerce management system for sales, inventory, and analytics." />
   <meta name="author" content="AppSales Team" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/logo.png" />
 
-  <!-- Theme Color (mobile browser UI color) -->
   <meta name="theme-color" content="#0f172a" />
 
-  <!-- Open Graph (for sharing on Facebook, WhatsApp, LinkedIn) -->
-  <meta property="og:title" content="AppSales | ERP & E-Commerce System" />
-  <meta property="og:description"
-    content="Manage sales, inventory, customers, and reports with AppSales ERP & E-commerce platform." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://appsales.com" />
-  <meta property="og:image" content="/og-image.png" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="AppSales | ERP & E-Commerce System" />
-  <meta name="twitter:description" content="A powerful ERP & E-commerce solution for modern businesses." />
-  <meta name="twitter:image" content="/og-image.png" />
-
-  <!-- Preconnect for performance (optional but professional) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Animate.css -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    #initial-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3b82f6; /* Your primary blue */
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .dark #initial-loader { background: #0f172a; }
+  </style>
 
-
-  <!-- App entry -->
   <script type="module" src="/src/main.jsx"></script>
 </head>
 
-<body class="bg-background text-foreground antialiased">
-  <!-- App Root -->
+<body class="bg-background text-foreground antialiased font-[Poppins]">
+  
+  <div id="initial-loader">
+    <div class="spinner"></div>
+  </div>
+
   <div id="root"></div>
 
-  <!-- No-JS fallback (SEO & accessibility) -->
   <noscript>
-    <strong>
-      AppSales requires JavaScript to run properly. Please enable JavaScript
-      in your browser.
-    </strong>
+    <div style="text-align: center; padding: 50px; font-family: sans-serif;">
+      <h2>JavaScript Required</h2>
+      <p>Please enable JavaScript to use the AppSales ERP system.</p>
+    </div>
   </noscript>
+
+  <script>
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('initial-loader');
+      if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.remove(), 500);
+      }
+    });
+  </script>
 </body>
 
 </html>

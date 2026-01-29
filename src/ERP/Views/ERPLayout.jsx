@@ -1,6 +1,11 @@
 import { Outlet } from "react-router-dom";
 import NavbarLayout from "@/Components/Navbar/NavbarLayout";
 
+/**
+ * ERPLayout serves as the internal wrapper for all ERP-related views.
+ * Since NavbarLayout (in App.jsx) handles the global navigation,
+ * this component focuses on the page content transition and spacing.
+ */
 const ERPLayout = () => {
   return (
     <div className="erp-container">

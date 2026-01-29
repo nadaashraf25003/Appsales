@@ -1,13 +1,12 @@
-import {
-  Inbox as InboxIcon,
-  Send as SendIcon,
-  Drafts as DraftsIcon,
-  Comment as CommentIcon,
-  ThumbUp as ThumbUpIcon,
-  Person as PersonIcon,
-  Settings as SettingsIcon,
-  Logout as LogoutIcon,
-} from "@mui/icons-material";
+// Direct path imports for maximum performance
+import InboxIcon from "@mui/icons-material/Inbox";
+import SendIcon from "@mui/icons-material/Send";
+import DraftsIcon from "@mui/icons-material/Drafts";
+import CommentIcon from "@mui/icons-material/Comment";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import PersonIcon from "@mui/icons-material/Person";
+import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 // Mail dropdown items
 export const mailItems = [

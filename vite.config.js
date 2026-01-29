@@ -24,4 +24,29 @@ export default defineConfig({
       },
     },
   },
+  optimizeDeps: {
+    include: [
+      "prop-types",
+      "react-is",
+      "@mui/material",
+      "@mui/utils",
+      "@mui/system",
+      "@emotion/react",
+      "@emotion/styled",
+    ],
+    // Prevents Vite from crawling 5,000+ icons on every load
+    exclude: ["@mui/icons-material"],
+  },
+  server: {
+    port: 5173,
+    proxy: {
+      "/api": {
+        // Updated to your local backend target
+        target: "https://localhost:7115", 
+        changeOrigin: true,
+        secure: false, // Set to false since you're using a local self-signed cert
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
 });

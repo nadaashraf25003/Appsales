@@ -10,13 +10,14 @@ import {
   styled,
   Badge,
 } from "@mui/material";
-import {
-  Search as SearchIcon,
-  Notifications as NotificationsIcon,
-  Mail as MailIcon,
-  Person as PersonIcon,
-} from "@mui/icons-material";
-import { MenuOpen as MenuOpenIcon } from "@mui/icons-material";
+
+// Direct path imports for icons
+import SearchIcon from "@mui/icons-material/Search";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import MailIcon from "@mui/icons-material/Mail";
+import PersonIcon from "@mui/icons-material/Person";
+import MenuIcon from "@mui/icons-material/Menu";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 
 // Import Dropdown component and items
 import Dropdown from "@/Components/Global/Dropdown";

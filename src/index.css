@@ -7,12 +7,12 @@
 ========================= */
 @layer base {
   body {
-    @apply font-sans text-gray-800 bg-light dark:bg-dark dark:text-light;
+    @apply font-sans text-gray-800 bg-light dark:bg-dark dark:text-light transition-colors duration-300;
   }
 }
 
 /* =========================
-   Components
+   Components (Custom Classes)
 ========================= */
 @layer components {
   /* Cards */
@@ -28,14 +28,14 @@
 
   /* Buttons */
   .btn-primary {
-    @apply bg-primary text-white font-bold py-2 px-4 rounded-xl hover:bg-primary/90;
+    @apply bg-primary text-white font-bold py-2 px-4 rounded-xl hover:bg-primary/90 transition-colors;
   }
   .dark .btn-primary {
     @apply bg-dark-primary text-white hover:bg-dark-primary/80;
   }
 
   .btn-secondary {
-    @apply bg-secondary text-white font-bold py-2 px-4 rounded-xl hover:bg-secondary/90;
+    @apply bg-secondary text-white font-bold py-2 px-4 rounded-xl hover:bg-secondary/90 transition-colors;
   }
   .dark .btn-secondary {
     @apply bg-dark-secondary text-white hover:bg-dark-secondary/80;
@@ -43,13 +43,13 @@
 
   /* Navbar & Sidebar */
   .navbar, .sidebar {
-    @apply bg-white shadow-card p-4;
+    @apply bg-white shadow-card p-4 transition-colors;
   }
   .dark .navbar, .dark .sidebar {
     @apply bg-dark shadow-card-dark;
   }
 
-  /* Semantic Text Colors  */
+  /* Semantic Text Colors */
   .text-brand-info {
     @apply text-info dark:text-dark-info;
   }
@@ -62,7 +62,7 @@
 
   /* Inputs */
   .input {
-    @apply border border-gray-300 rounded-xl p-2 w-full focus:outline-none focus:ring-2 focus:ring-primary;
+    @apply border border-gray-300 rounded-xl p-2 w-full focus:outline-none focus:ring-2 focus:ring-primary transition-all;
   }
   .dark .input {
     @apply border-gray-600 bg-dark text-light focus:ring-dark-primary;

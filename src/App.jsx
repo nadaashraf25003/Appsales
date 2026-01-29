@@ -15,11 +15,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // Toasts
 import { ConfirmToast } from "@/Components/Global/ConfirmToast";
 import { Toaster } from "react-hot-toast";
-
-// UX
 import ScrollToTop from "@/utils/ScrollToTop";
 
-// Initialize Query Client
+// Initialize Query Client with performance-minded defaults
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -44,6 +42,7 @@ export default function App() {
           {/* Global UI Elements */}
           <ThemeToggle />
           <ScrollToTop />
+          <ThemeToggle />
 
           {/* Dashboard Layout */}
           {/* <NavbarLayout> */}

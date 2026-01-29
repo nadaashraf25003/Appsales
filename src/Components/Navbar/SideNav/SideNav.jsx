@@ -2,9 +2,56 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { userData } from "./SideNavItems/userData";
 
-// MUI Icons
-import * as Icons from "@mui/icons-material";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
+// UI Functional Icons (Direct Path)
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+
+// Navigation Icons (Direct Path)
+import Dashboard from "@mui/icons-material/Dashboard";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Analytics from "@mui/icons-material/Analytics";
+import Notifications from "@mui/icons-material/Notifications";
+import PointOfSale from "@mui/icons-material/PointOfSale";
+import ShoppingCart from "@mui/icons-material/ShoppingCart";
+import AssignmentReturn from "@mui/icons-material/AssignmentReturn";
+import People from "@mui/icons-material/People";
+import Inventory from "@mui/icons-material/Inventory";
+import Category from "@mui/icons-material/Category";
+import LocalShipping from "@mui/icons-material/LocalShipping";
+import AccountBalance from "@mui/icons-material/AccountBalance";
+import Receipt from "@mui/icons-material/Receipt";
+import Assessment from "@mui/icons-material/Assessment";
+import BarChart from "@mui/icons-material/BarChart";
+import Settings from "@mui/icons-material/Settings";
+import Paid from "@mui/icons-material/Paid";
+import Group from "@mui/icons-material/Group";
+import Apartment from "@mui/icons-material/Apartment";
+
+/**
+ * iconMap connects the string values in userData.ts 
+ * to the actual Material UI Icon components.
+ */
+const iconMap = {
+  Dashboard,
+  AccountCircle,
+  Analytics,
+  Notifications,
+  PointOfSale,
+  ShoppingCart,
+  AssignmentReturn,
+  People,
+  Inventory,
+  Category,
+  LocalShipping,
+  AccountBalance,
+  Receipt,
+  Assessment,
+  BarChart,
+  Settings,
+  Paid,
+  Group,
+  Apartment
+};
 
 export default function SideNav({ sidebarOpen }) {
   const user = userData.admin;
@@ -18,7 +65,7 @@ export default function SideNav({ sidebarOpen }) {
   };
 
   const renderIcon = (iconName) => {
-    const IconComponent = Icons[iconName];
+    const IconComponent = iconMap[iconName];
     return IconComponent ? <IconComponent fontSize="small" /> : null;
   };
 
@@ -29,14 +76,14 @@ export default function SideNav({ sidebarOpen }) {
       transition-all duration-300
       ${sidebarOpen ? "w-56" : "w-20"}`}
     >
-      {/* Logo */}
+      {/* Logo Section */}
       <div className="h-14 flex items-center justify-center border-b border-gray-200 dark:border-gray-700">
         <span className="font-bold text-lg text-primary">
           {sidebarOpen ? "ERP Admin" : "EA"}
         </span>
       </div>
 
-      {/* User Info */}
+      {/* User Info Section */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-3">
           <img

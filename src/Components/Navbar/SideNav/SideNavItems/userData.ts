@@ -12,9 +12,9 @@ export const userData = {
       avatar: DefaultProfilePic,
       role: userRole,
       items: [
-        { title: "Dashboard", url: "/dashboard" },
-        { title: "Profile", url: "/profile" },
-        { title: "Notifications", url: "/notifications" },
+        { title: "Dashboard", url: "/erp" },
+        { title: "Profile", url: "/erp/profile" },
+        { title: "Notifications", url: "/erp/notifications" },
         { title: "Logout", url: "/logout" },
       ],
     },
@@ -24,39 +24,21 @@ export const userData = {
         section: "Main",
         icon: "Dashboard",
         items: [
-          // { title: "Dashboard", icon: "Dashboard", url: "/erp/dashboard" },
-          { title: "Profile", icon: "AccountCircle", url: "/profile" },
-          {
-            title: "Analytics",
-            icon: "Analytics",
-            url: "/dashboard/analytics",
-          },
-          {
-            title: "Activities",
-            icon: "Notifications",
-            url: "/dashboard/activities",
-          },
+          { title: "Dashboard", icon: "Dashboard", url: "/erp" },
+          { title: "Profile", icon: "AccountCircle", url: "/erp/profile" },
+          { title: "Analytics", icon: "Analytics", url: "/erp/dashboard/analytics" },
+          { title: "Activities", icon: "Notifications", url: "/erp/dashboard/activities" },
         ],
       },
 
       {
-        section: "Dashboard",
-        icon: "Dashboard",
-        items: [
-          { title: "Home", icon: "PointOfSale", url: "/erp/dashboard/home" },
-          { title: "Sales Chart", icon: "ShoppingCart", url: "/erp/dashboard/sales-chart" },
-          { title: "Recent Orders", icon: "AssignmentReturn", url: "/erp/dashboard/recent-orders" },
-          { title: "Activities", icon: "People", url: "/erp/dashboard/activities" },
-        ],
-      },
-      {
         section: "Sales",
         icon: "ShoppingCart",
         items: [
-          { title: "POS", icon: "PointOfSale", url: "/sales/pos" },
-          { title: "Orders", icon: "ShoppingCart", url: "/sales/orders" },
-          { title: "Returns", icon: "AssignmentReturn", url: "/sales/returns" },
-          { title: "Customers", icon: "People", url: "/sales/customers" },
+          { title: "POS", icon: "PointOfSale", url: "/erp/sales/pos" },
+          { title: "Orders", icon: "ShoppingCart", url: "/erp/sales/orders" },
+          { title: "Returns", icon: "AssignmentReturn", url: "/erp/sales/returns" },
+          { title: "Customers", icon: "People", url: "/erp/sales/customers" },
         ],
       },
 
@@ -64,17 +46,9 @@ export const userData = {
         section: "Inventory",
         icon: "Inventory",
         items: [
-          { title: "Products", icon: "Inventory", url: "/inventory/items" },
-          {
-            title: "Categories",
-            icon: "Category",
-            url: "/inventory/categories",
-          },
-          {
-            title: "Suppliers",
-            icon: "LocalShipping",
-            url: "/inventory/suppliers",
-          },
+          { title: "Products", icon: "Inventory", url: "/erp/inventory/items" },
+          { title: "Categories", icon: "Category", url: "/erp/inventory/categories" },
+          { title: "Suppliers", icon: "LocalShipping", url: "/erp/inventory/suppliers" },
         ],
       },
 
@@ -82,14 +56,10 @@ export const userData = {
         section: "Accounting",
         icon: "AccountBalance",
         items: [
-          { title: "Dashboard", icon: "AccountBalance", url: "/accounting" },
-          { title: "Expenses", icon: "Receipt", url: "/accounting/expenses" },
-          { title: "Reports", icon: "Assessment", url: "/accounting/reports" },
-          {
-            title: "Statements",
-            icon: "BarChart",
-            url: "/accounting/statements",
-          },
+          { title: "Dashboard", icon: "AccountBalance", url: "/erp/accounting" },
+          { title: "Expenses", icon: "Receipt", url: "/erp/accounting/expenses" },
+          { title: "Reports", icon: "Assessment", url: "/erp/accounting/reports" },
+          { title: "Statements", icon: "BarChart", url: "/erp/accounting/statements" },
         ],
       },
 
@@ -97,69 +67,42 @@ export const userData = {
         section: "Settings",
         icon: "Settings",
         items: [
-          { title: "General", icon: "Settings", url: "/settings/general" },
-          { title: "Financial", icon: "Paid", url: "/settings/financial" },
-          { title: "Users", icon: "Group", url: "/settings/users" },
-          {
-            title: "Organization",
-            icon: "Apartment",
-            url: "/settings/organization",
-          },
+          { title: "General", icon: "Settings", url: "/erp/settings/general" },
+          { title: "Financial", icon: "Paid", url: "/erp/settings/financial" },
+          { title: "Users", icon: "Group", url: "/erp/settings/users" },
+          { title: "Organization", icon: "Apartment", url: "/erp/settings/organization" },
         ],
       },
     ],
 
+    /* Reference mapping for breadcrumbs or lookups */
     routes: {
       auth: [
-        { path: "/login", name: "Login" },
-        { path: "/register", name: "Register" },
-        { path: "/register/verify", name: "Verify Email" },
-        { path: "/register/success", name: "Verification Success" },
+        { path: "/erp/auth/login", name: "Login" },
+        { path: "/erp/auth/register", name: "Register" },
       ],
-
-      setup: [
-        { path: "/setup", name: "Basic Info" },
-        { path: "/setup/address", name: "Address Info" },
-        { path: "/setup/financial", name: "Financial Info" },
-      ],
-
-      dashboard: [
-        { path: "/dashboard", name: "Main Dashboard" },
-        { path: "/dashboard/sales-chart", name: "Sales Chart" },
-        { path: "/dashboard/recent-orders", name: "Recent Orders" },
-        { path: "/dashboard/activities", name: "Activities" },
-      ],
-
       sales: [
-        { path: "/sales/pos", name: "POS" },
-        { path: "/sales/pos/order/:id", name: "POS Order Details" },
-        { path: "/sales/orders", name: "Orders" },
-        { path: "/sales/orders/:id", name: "Order Details" },
-        { path: "/sales/returns", name: "Returns" },
-        { path: "/sales/customers", name: "Customers" },
-        { path: "/sales/customers/:id", name: "Customer Details" },
-        { path: "/sales/customers/:id/edit", name: "Edit Customer" },
+        { path: "/erp/sales/pos", name: "POS" },
+        { path: "/erp/sales/pos/order/:id", name: "POS Order Details" },
+        { path: "/erp/sales/orders", name: "Orders" },
+        { path: "/erp/sales/orders/:id", name: "Order Details" },
+        { path: "/erp/sales/returns", name: "Returns" },
+        { path: "/erp/sales/customers", name: "Customers" },
+        { path: "/erp/sales/customers/:id", name: "Customer Details" },
+        { path: "/erp/sales/customers/:id/edit", name: "Edit Customer" },
       ],
-
       inventory: [
-        { path: "/inventory/items", name: "Products" },
-        { path: "/inventory/items/:id/edit", name: "Edit Product" },
-        { path: "/inventory/categories", name: "Categories" },
-        { path: "/inventory/suppliers", name: "Suppliers" },
+        { path: "/erp/inventory/items", name: "Products" },
+        { path: "/erp/inventory/categories", name: "Categories" },
+        { path: "/erp/inventory/suppliers", name: "Suppliers" },
       ],
-
       accounting: [
-        { path: "/accounting", name: "Accounting Dashboard" },
-        { path: "/accounting/expenses", name: "Expenses" },
-        { path: "/accounting/expenses/:id/edit", name: "Edit Expense" },
-        { path: "/accounting/reports", name: "Reports" },
-        { path: "/accounting/statements", name: "Financial Statements" },
-      ],
-
-      common: [
-        { path: "/loading", name: "Loading" },
-        { path: "/error", name: "Error" },
-        { path: "*", name: "Not Found" },
+        { path: "/erp/accounting", name: "Accounting Dashboard" },
+        { path: "/erp/accounting/expenses", name: "Expenses" },
+        { path: "/erp/accounting/expenses/add", name: "Add Expense" },
+        { path: "/erp/accounting/expenses/:id/edit", name: "Edit Expense" },
+        { path: "/erp/accounting/reports", name: "Reports" },
+        { path: "/erp/accounting/statements", name: "Financial Statements" },
       ],
     },
   },
