@@ -58,19 +58,19 @@ const TenantList = () => {
   //   }
   // };
 
-  const handleActivate = async (id: number) => {
-    if (!window.confirm("Are you sure you want to activate this tenant?"))
-      return;
+  // const handleActivate = async (id: number) => {
+  //   if (!window.confirm("Are you sure you want to activate this tenant?"))
+  //     return;
 
-    try {
-      // Note: You'll need to add an activateTenantMutation to your useTenants hook
-      // For now, this is a placeholder
-      console.log("Activate tenant:", id);
-      refetch();
-    } catch (error) {
-      console.error("Failed to activate tenant:", error);
-    }
-  };
+  //   try {
+  //     // Note: You'll need to add an activateTenantMutation to your useTenants hook
+  //     // For now, this is a placeholder
+  //     console.log("Activate tenant:", id);
+  //     refetch();
+  //   } catch (error) {
+  //     console.error("Failed to activate tenant:", error);
+  //   }
+  // };
 
   const filteredTenants = tenants.filter((t) => {
     const matchesSearch =
@@ -541,7 +541,7 @@ const TenantList = () => {
                             </svg>
                             Edit
                           </Link>
-                          <button
+                          {/* <button
                             onClick={async () => {
                               if (
                                 !window.confirm(
@@ -566,7 +566,7 @@ const TenantList = () => {
                             className="inline-flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors"
                           >
                             Delete
-                          </button>
+                          </button> */}
                         </div>
                       </td>
                     </tr>

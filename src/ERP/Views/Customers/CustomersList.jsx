@@ -126,7 +126,13 @@ const CustomersList = () => {
       </div>
     );
   }
+const storedUser = localStorage.getItem("user");
+const user = storedUser ? JSON.parse(storedUser) : null;
 
+const allowedRoles = ["SuperAdmin", "TenantOwner", "BranchManager"];
+
+const hasAccess =
+  user && allowedRoles.includes(user.role);
   return (
     <div className="min-h-screen bg-light dark:bg-dark-bg transition-colors duration-300 p-4 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto animate-slideDown">
@@ -377,48 +383,52 @@ const CustomersList = () => {
                                   />
                                 </svg>
                               </button>
-                              <button
-                                onClick={() =>
-                                  navigate(
-                                    `/erp/sales/customers/${customer.id}/edit`,
-                                  )
-                                }
-                                className="p-2 rounded-lg bg-primary/10 dark:bg-dark-primary/20 text-primary dark:text-dark-primary hover:bg-primary/20 dark:hover:bg-dark-primary/30 transition-colors"
-                                title="Edit"
-                              >
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                  />
-                                </svg>
-                              </button>
-                              <button
-                                onClick={() => showDeleteConfirm(customer)}
-                                className="p-2 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800/40 transition-colors"
-                                title="Delete"
-                              >
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                  />
-                                </svg>
-                              </button>
+                              {hasAccess && (
+                                <>
+                                  <button
+                                    onClick={() =>
+                                      navigate(
+                                        `/erp/sales/customers/${customer.id}/edit`,
+                                      )
+                                    }
+                                    className="p-2 rounded-lg bg-primary/10 dark:bg-dark-primary/20 text-primary dark:text-dark-primary hover:bg-primary/20 dark:hover:bg-dark-primary/30 transition-colors"
+                                    title="Edit"
+                                  >
+                                    <svg
+                                      className="w-4 h-4"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                      />
+                                    </svg>
+                                  </button>
+                                  <button
+                                    onClick={() => showDeleteConfirm(customer)}
+                                    className="p-2 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800/40 transition-colors"
+                                    title="Delete"
+                                  >
+                                    <svg
+                                      className="w-4 h-4"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                      />
+                                    </svg>
+                                  </button>
+                                </>
+                              )}
                             </div>
                           </td>
                         </tr>
@@ -523,48 +533,52 @@ const CustomersList = () => {
                               />
                             </svg>
                           </button>
-                          <button
-                            onClick={() =>
-                              navigate(
-                                `/erp/sales/customers/${customer.id}/edit`,
-                              )
-                            }
-                            className="p-2 rounded-lg bg-primary/10 dark:bg-dark-primary/20 text-primary dark:text-dark-primary"
-                            title="Edit"
-                          >
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                              />
-                            </svg>
-                          </button>
-                          <button
-                            onClick={() => showDeleteConfirm(customer)}
-                            className="p-2 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400"
-                            title="Delete"
-                          >
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                              />
-                            </svg>
-                          </button>
+                          {hasAccess && (
+                            <>
+                              <button
+                                onClick={() =>
+                                  navigate(
+                                    `/erp/sales/customers/${customer.id}/edit`,
+                                  )
+                                }
+                                className="p-2 rounded-lg bg-primary/10 dark:bg-dark-primary/20 text-primary dark:text-dark-primary"
+                                title="Edit"
+                              >
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                  />
+                                </svg>
+                              </button>
+                              <button
+                                onClick={() => showDeleteConfirm(customer)}
+                                className="p-2 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400"
+                                title="Delete"
+                              >
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                  />
+                                </svg>
+                              </button>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>

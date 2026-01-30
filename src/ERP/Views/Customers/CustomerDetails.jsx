@@ -81,6 +81,13 @@ const CustomerDetails = () => {
     );
   }
 
+const storedUser = localStorage.getItem("user");
+const user = storedUser ? JSON.parse(storedUser) : null;
+
+const allowedRoles = ["SuperAdmin", "TenantOwner", "BranchManager"];
+
+const hasAccess =
+  user && allowedRoles.includes(user.role);
   if (!customer) {
     return (
       <div className="min-h-screen bg-light dark:bg-dark-bg flex items-center justify-center p-4">
@@ -167,7 +174,8 @@ const CustomerDetails = () => {
                   ? "Premium Customer"
                   : "Regular Customer"}
               </div>
-              <button
+              {hasAccess && 
+             ( <button
                 onClick={() => navigate(`/erp/sales/customers/${id}/edit`)}
                 className="btn-primary flex items-center gap-1 md:gap-2 text-xs md:text-sm py-1.5 md:py-2 px-3 md:px-4"
               >
@@ -186,7 +194,7 @@ const CustomerDetails = () => {
                 </svg>
                 <span className="hidden sm:inline">Edit Customer</span>
                 <span className="sm:hidden">Edit</span>
-              </button>
+              </button>)}
             </div>
           </div>
 

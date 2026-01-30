@@ -26,6 +26,9 @@ import Settings from "@mui/icons-material/Settings";
 import Paid from "@mui/icons-material/Paid";
 import Group from "@mui/icons-material/Group";
 import Apartment from "@mui/icons-material/Apartment";
+import Add from "@mui/icons-material/Add";
+import Domain from "@mui/icons-material/Domain";
+
 
 /**
  * iconMap connects the string values in userData.ts 
@@ -50,7 +53,9 @@ const iconMap = {
   Settings,
   Paid,
   Group,
-  Apartment
+  Apartment,
+  Add,
+  Domain
 };
 
 export default function SideNav({ sidebarOpen }) {

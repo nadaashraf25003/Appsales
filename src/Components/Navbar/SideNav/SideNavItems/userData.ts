@@ -1,195 +1,263 @@
 import DefaultProfilePic from "@/assets/default-avatar.png";
 
+/* =======================
+   Types
+======================= */
+
+export type Role =
+  | "SuperAdmin"
+  | "TenantOwner"
+  | "BranchManager"
+  | "Cashier"
+  | "Accountant";
+
 interface User {
   name: string;
   email: string;
-  role: string;
+  role: Role;
 }
 
+interface NavItem {
+  title: string;
+  icon: string;
+  url: string;
+  roles?: Role[]; // 👈 allowed roles
+}
+
+interface NavSection {
+  section: string;
+  icon: string;
+  items: NavItem[];
+}
+
+/* =======================
+   Get user from localStorage
+======================= */
+
 let user: User | null = null;
+
 try {
   const userString = localStorage.getItem("user");
   user = userString ? JSON.parse(userString) : null;
+  // console.log("Parsed user from localStorage:", user);
 } catch (error) {
   console.error("Error parsing user from localStorage:", error);
 }
 
-const UserName = user?.name || "shadcn";
+const userName = user?.name || "shadcn";
 const userEmail = user?.email || "m@example.com";
-const userRole = user?.role || "Admin";
+const userRole: Role = user?.role || "SuperAdmin";
 
-console.log("user", user);
+/* =======================
+   Role-based filter
+======================= */
+
+function filterSideNavByRole(
+  sideNav: NavSection[],
+  role: Role
+): NavSection[] {
+  return sideNav
+    .map((section) => ({
+      ...section,
+      items: section.items.filter(
+        (item) => !item.roles || item.roles.includes(role)
+      ),
+    }))
+    .filter((section) => section.items.length > 0);
+}
+
+/* =======================
+   Base navigation config
+======================= */
+
+const sideNav: NavSection[] = [
+  {
+    section: "Main",
+    icon: "Dashboard",
+    items: [
+      {
+        title: "Profile",
+        icon: "AccountCircle",
+        url: "/erp/profile",
+      },
+      {
+        title: "Activities",
+        icon: "Notifications",
+        url: "/erp/dashboard/activities",
+      },
+      {
+        title: "Customers",
+        icon: "People",
+        url: "/erp/sales/customers",
+        roles: ["SuperAdmin", "TenantOwner", "BranchManager", "Accountant", "Cashier"],
+      },
+    ],
+  },
+
+  {
+    section: "Dashboard",
+    icon: "Dashboard",
+    items: [
+      {
+        title: "Home",
+        icon: "PointOfSale",
+        url: "/erp/dashboard/home",
+        roles: ["SuperAdmin", "TenantOwner", "Accountant", "BranchManager"],
+      },
+      {
+        title: "Sales Chart",
+        icon: "ShoppingCart",
+        url: "/erp/dashboard/sales-chart",
+        roles: ["SuperAdmin", "TenantOwner", "Accountant"],
+      },
+      {
+        title: "Recent Orders",
+        icon: "AssignmentReturn",
+        url: "/erp/dashboard/recent-orders",
+      },
+    ],
+  },
+
+  {
+    section: "Sales",
+    icon: "ShoppingCart",
+    items: [
+      {
+        title: "POS",
+        icon: "PointOfSale",
+        url: "/erp/sales/pos",
+        roles: ["Cashier", "BranchManager","SuperAdmin"],
+      },
+      {
+        title: "Orders",
+        icon: "ShoppingCart",
+        url: "/erp/sales/orders",
+        roles: ["BranchManager", "TenantOwner", "SuperAdmin"],
+      },
+      {
+        title: "Returns",
+        icon: "AssignmentReturn",
+        url: "/erp/sales/returns",
+        roles: ["BranchManager", "SuperAdmin"],
+      },
+    ],
+  },
+
+  {
+    section: "Inventory",
+    icon: "Inventory",
+    items: [
+      {
+        title: "Products",
+        icon: "Inventory",
+        url: "/erp/inventory/items",
+        roles: ["SuperAdmin", "TenantOwner", "BranchManager"],
+      },
+      {
+        title: "Categories",
+        icon: "Category",
+        url: "/erp/inventory/categories",
+      },
+      {
+        title: "Suppliers",
+        icon: "LocalShipping",
+        url: "/erp/inventory/suppliers",
+      },
+    ],
+  },
+
+  {
+    section: "Accounting",
+    icon: "AccountBalance",
+    items: [
+      {
+        title: "Dashboard",
+        icon: "AccountBalance",
+        url: "/erp/accounting",
+        roles: ["SuperAdmin", "Accountant"],
+      },
+      {
+        title: "Expenses",
+        icon: "Receipt",
+        url: "/erp/accounting/expenses",
+        roles: ["Accountant"],
+      },
+      {
+        title: "Reports",
+        icon: "Assessment",
+        url: "/erp/accounting/reports",
+        roles: ["SuperAdmin", "Accountant"],
+      },
+      {
+        title: "Statements",
+        icon: "BarChart",
+        url: "/erp/accounting/statements",
+        roles: ["SuperAdmin", "Accountant"],
+      },
+    ],
+  },
+
+  {
+    section: "Organization",
+    icon: "Apartment",
+    items: [
+      {
+        title: "Users",
+        icon: "Group",
+        url: "/erp/users",
+        roles: ["SuperAdmin"],
+      },
+      {
+        title: "Branches",
+        icon: "Domain",
+        url: "/erp/branches",
+        roles: ["SuperAdmin", "TenantOwner", "BranchManager"],
+      },
+      {
+        title: "Create Branch",
+        icon: "Add",
+        url: "/erp/branches/create",
+        roles: ["SuperAdmin", "TenantOwner", "BranchManager"],
+      },
+      {
+        title: "Tenants",
+        icon: "Domain",
+        url: "/erp/tenants",
+        roles: ["SuperAdmin", "TenantOwner"],
+      },
+      {
+        title: "Create Tenant",
+        icon: "Add",
+        url: "/erp/tenants/create",
+        roles: ["SuperAdmin", "TenantOwner"],
+      },
+    ],
+  },
+];
+
+/* =======================
+   Exported user data
+======================= */
+
 export const userData = {
   admin: {
     userTopNav: {
-      name: UserName,
+      name: userName,
       email: userEmail,
       avatar: DefaultProfilePic,
       role: userRole,
       items: [
-        // { title: "Dashboard", url: "/erp" },
         { title: "Profile", url: "/erp/profile" },
-        // { title: "Notifications", url: "/erp/notifications" },
         { title: "Logout", url: "/logout" },
       ],
     },
 
-    sideNav: [
-      {
-        section: "Main",
-        icon: "Dashboard",
-        items: [
-          // { title: "Dashboard", icon: "Dashboard", url: "/erp" },
-          { title: "Profile", icon: "AccountCircle", url: "/erp/profile" },
-          // {
-          //   title: "Analytics",
-          //   icon: "Analytics",
-          //   url: "/erp/dashboard/analytics",
-          // },
-          {
-            title: "Activities",
-            icon: "Notifications",
-            url: "/erp/dashboard/activities",
-          },
-          { title: "Customers", icon: "People", url: "/erp/sales/customers" },
-        ],
-      },
+    sideNav: filterSideNavByRole(sideNav, userRole),
 
-      {
-        section: "Dashboard",
-        icon: "Dashboard",
-        items: [
-          { title: "Home", icon: "PointOfSale", url: "/erp/dashboard/home" },
-          {
-            title: "Sales Chart",
-            icon: "ShoppingCart",
-            url: "/erp/dashboard/sales-chart",
-          },
-          // {
-          //   title: "Recent Orders",
-          //   icon: "AssignmentReturn",
-          //   url: "/erp/dashboard/recent-orders",
-          // },
-          // {
-          //   title: "Activities",
-          //   icon: "People",
-          //   url: "/erp/dashboard/activities",
-          // },
-        ],
-      },
-      {
-        section: "Sales",
-        icon: "ShoppingCart",
-        items: [
-          { title: "POS", icon: "PointOfSale", url: "/erp/sales/pos" },
-          { title: "Orders", icon: "ShoppingCart", url: "/erp/sales/orders" },
-          {
-            title: "Returns",
-            icon: "AssignmentReturn",
-            url: "/erp/sales/returns",
-          },
-        ],
-      },
-
-      {
-        section: "Inventory",
-        icon: "Inventory",
-        items: [
-          { title: "Products", icon: "Inventory", url: "/erp/inventory/items" },
-          {
-            title: "Categories",
-            icon: "Category",
-            url: "/erp/inventory/categories",
-          },
-          {
-            title: "Suppliers",
-            icon: "LocalShipping",
-            url: "/erp/inventory/suppliers",
-          },
-        ],
-      },
-
-      {
-        section: "Accounting",
-        icon: "AccountBalance",
-        items: [
-          {
-            title: "Dashboard",
-            icon: "AccountBalance",
-            url: "/erp/accounting",
-          },
-          {
-            title: "Expenses",
-            icon: "Receipt",
-            url: "/erp/accounting/expenses",
-          },
-          {
-            title: "Reports",
-            icon: "Assessment",
-            url: "/erp/accounting/reports",
-          },
-          {
-            title: "Statements",
-            icon: "BarChart",
-            url: "/erp/accounting/statements",
-          },
-        ],
-      },
-      {
-        section: "Organization",
-        icon: "Apartment",
-        items: [
-          { title: "Users", icon: "Group", url: "/erp/users" },
-          { title: "Branches", icon: "Add", url: "/erp/branches" },
-          { title: "Create Branch", icon: "Add", url: "/erp/branches/create" },
-          { title: "Tenants", icon: "Domain", url: "/erp/tenants" },
-          { title: "Create Tenant", icon: "Add", url: "/erp/tenants/create" },
-        ],
-      },
-
-      // {
-      //   section: "Settings",
-      //   icon: "Settings",
-      //   items: [
-      //     { title: "General", icon: "Settings", url: "/erp/settings/general" },
-      //     { title: "Financial", icon: "Paid", url: "/erp/settings/financial" },
-      //     // {
-      //     //   title: "Organization",
-      //     //   icon: "Apartment",
-      //     //   url: "/erp/settings/organization",
-      //     // },
-      //   ],
-      // },
-    ],
-
-    /* Reference mapping for breadcrumbs or lookups */
     routes: {
       auth: [
         { path: "/erp/auth/login", name: "Login" },
         { path: "/erp/auth/register", name: "Register" },
-      ],
-      sales: [
-        { path: "/erp/sales/pos", name: "POS" },
-        { path: "/erp/sales/pos/order/:id", name: "POS Order Details" },
-        { path: "/erp/sales/orders", name: "Orders" },
-        { path: "/erp/sales/orders/:id", name: "Order Details" },
-        { path: "/erp/sales/returns", name: "Returns" },
-        { path: "/erp/sales/customers", name: "Customers" },
-        { path: "/erp/sales/customers/:id", name: "Customer Details" },
-        { path: "/erp/sales/customers/:id/edit", name: "Edit Customer" },
-      ],
-      inventory: [
-        { path: "/erp/inventory/items", name: "Products" },
-        { path: "/erp/inventory/categories", name: "Categories" },
-        { path: "/erp/inventory/suppliers", name: "Suppliers" },
-      ],
-      accounting: [
-        { path: "/erp/accounting", name: "Accounting Dashboard" },
-        { path: "/erp/accounting/expenses", name: "Expenses" },
-        { path: "/erp/accounting/expenses/add", name: "Add Expense" },
-        { path: "/erp/accounting/expenses/:id/edit", name: "Edit Expense" },
-        { path: "/erp/accounting/reports", name: "Reports" },
-        { path: "/erp/accounting/statements", name: "Financial Statements" },
       ],
     },
   },
