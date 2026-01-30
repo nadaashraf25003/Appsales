@@ -56,7 +56,7 @@ const useTenants = () => {
   });
 
   // Deactivate Tenant
-  const deactivateTenantMutation = useMutation({
+  const deleteTenantMutation  = useMutation({
     mutationFn: async (id: number) => {
       const res = await api.delete(Urls.TENANTS.DEACTIVATE(id));
       return res.data;
@@ -67,7 +67,7 @@ const useTenants = () => {
     createTenantMutation,
     getTenantByIdMutation,
     updateTenantMutation,
-    deactivateTenantMutation,
+    deleteTenantMutation ,
   };
 };
 

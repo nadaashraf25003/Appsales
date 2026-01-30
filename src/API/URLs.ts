@@ -1,12 +1,13 @@
 const Urls = {
   AUTH: {
-    LOGIN: "Auth/login",
-    REGISTER: "Auth/register",
-    VERIFY_EMAIL: "Auth/verify-email",
-    FORGOT_PASSWORD: "Auth/forgot-password",
-    RESET_PASSWORD: "Auth/reset-password",
-    REFRESH_TOKEN: "Auth/refresh-token",
-    RESEND_VERIFICATION: "Auth/resend-verification",
+    LOGIN: "auth/login",
+    REGISTER: "auth/register",
+    VERIFY_EMAIL: "auth/verify-email",
+    FORGOT_PASSWORD: "auth/forgot-password",
+    RESET_PASSWORD: "auth/reset-password",
+    REFRESH_TOKEN: "auth/refresh-token",
+    RESEND_VERIFICATION: "auth/resend-verification",
+    APPROVE_USER: "/auth/approve-user",
   },
 
   CUSTOMERS: {
@@ -32,6 +33,7 @@ const Urls = {
     GET_BY_TENANT: (tenantId: number) => `api/User/getByTenant/${tenantId}`,
     UPDATE: "api/User/update",
     DEACTIVATE: (id: number) => `api/User/deactivate/${id}`,
+    DELETE: (id: number) => `api/User/delete/${id}`,
   },
 
   TENANTS: {
@@ -40,6 +42,7 @@ const Urls = {
     UPDATE: "api/Tenants/update",
     GET_ALL: "api/Tenants",
     DEACTIVATE: (id: number) => `api/Tenants/deactivate/${id}`,
+    DELETE: (id: number) => `api/Tenants/delete/${id}`,
   },
 
   SALES: {
@@ -56,6 +59,7 @@ const Urls = {
   },
 
   BRANCHES: {
+      BASE: "api/Branch",
     CREATE: "api/Branch/create",
     GET_BY_TENANT: (tenantId: number) =>
       `api/Branch/BranchesByTenant/${tenantId}`,

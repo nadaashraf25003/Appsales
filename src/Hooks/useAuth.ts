@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import api from "@/API/Config";
 import Urls from "@/API/URLs";
 import { setToken, clearToken } from "@/API/token";
+import toast from "react-hot-toast";
 
 /* =======================
    Types
@@ -103,6 +104,21 @@ const useAuth = () => {
     clearToken();
   };
 
+  // Approve User (SuperAdmin only)
+  const approveUserMutation = useMutation({
+    mutationFn: async (userId: number) => {
+      const res = await api.put(`${Urls.AUTH.APPROVE_USER}/${userId}`);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      toast.success(data?.message || "User approved successfully!");
+    },
+    onError: (err: any) => {
+      toast.error(err?.message || "Failed to approve user");
+    },
+  });
+
+
   return {
     loginMutation,
     registerMutation,
@@ -111,6 +127,7 @@ const useAuth = () => {
     resetPasswordMutation,
     refreshTokenMutation,
     resendVerificationMutation,
+     approveUserMutation,
     logout,
   };
 };

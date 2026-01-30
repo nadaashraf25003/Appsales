@@ -81,14 +81,14 @@ const useCustomers = () => {
       return res.data;
     },
   });
-const getAllCustomersQuery = () =>
-  useQuery({
-    queryKey: ["customers"],
-    queryFn: async () => {
-      const res = await api.get(Urls.CUSTOMERS.GET_ALL);
-      return res.data;
-    },
-  });
+  const getAllCustomersQuery = () =>
+    useQuery({
+      queryKey: ["customers"],
+      queryFn: async () => {
+        const res = await api.get(Urls.CUSTOMERS.GET_ALL);
+        return res.data;
+      },
+    });
   return {
     createCustomerMutation,
     updateCustomerMutation,

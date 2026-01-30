@@ -166,7 +166,7 @@ export default function ERPLandingPage() {
                     to="/erp/auth/register"
                     className="group relative bg-gradient-to-r from-primary to-secondary dark:from-dark-primary dark:to-dark-secondary text-white font-bold px-8 py-4 rounded-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 shadow-lg flex items-center gap-3 overflow-hidden"
                   >
-                    <span className="relative">Start Free 30-Day Trial</span>
+                    <span className="relative">Create New Account</span>
                     <Rocket className="w-5 h-5 relative group-hover:translate-x-1 transition-transform" />
                     <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                   </Link>
@@ -312,7 +312,7 @@ export default function ERPLandingPage() {
                 to={isLoggedIn ? "/erp/dashboard/home" : "/erp/auth/register"}
                 className="btn-primary px-8 py-4 text-lg font-bold"
               >
-                {isLoggedIn ? 'Go to Dashboard' : 'Start Free Trial'}
+                {isLoggedIn ? 'Go to Dashboard' : 'Create New Account'}
               </Link>
              
             </div>

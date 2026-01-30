@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import api from "@/API/Config";
 import Urls from "@/API/URLs";
 
@@ -29,6 +29,7 @@ export interface UpdateBranchData {
   address: string;
   phone: string;
   email: string;
+  isActive: boolean;
 }
 /* =======================
    Hook
@@ -51,6 +52,18 @@ const useBranches = () => {
     },
   });
 
+  
+  // Get Branch by ID (new)
+  const getBranchByIdQuery = (id: number) =>
+    useQuery({
+      queryKey: ["branch", id],
+      queryFn: async () => {
+        const res = await api.get(`${Urls.BRANCHES.BASE}/${id}`);
+        return res.data; // { success: true, data: BranchDto }
+      },
+      enabled: !!id, // only fetch if id is valid
+    });
+
   // Update Branch
   const updateBranchMutation = useMutation({
     mutationFn: async (data: UpdateBranchData) => {
@@ -72,6 +85,7 @@ const useBranches = () => {
     getBranchesByTenantMutation,
     updateBranchMutation,
     deactivateBranchMutation,
+    getBranchByIdQuery
   };
 };
 

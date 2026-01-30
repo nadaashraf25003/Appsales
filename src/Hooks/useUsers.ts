@@ -9,7 +9,7 @@ import Urls from "@/API/URLs";
 
 export interface UserDto {
   id: number;
-  fullName: string;
+  name: string;
   email: string;
   role: string;
   tenantId: number;
@@ -25,16 +25,13 @@ export interface CreateUserData {
   tenantId: number;
   branchId?: number;
 }
-
 export interface UpdateUserData {
-  id: number;
-  fullName?: string;
-  email?: string;
+  userId: number;
+  username: string;
+  email: string;
   password?: string;
-  role?: string;
-  tenantId?: number;
-  branchId?: number;
-  isActive?: boolean;
+  role: string;
+  isActive?: boolean; // optional, just for frontend logic
 }
 
 /* =======================
@@ -62,22 +59,30 @@ const useUsers = () => {
   const getUsersByTenantMutation = useMutation({
     mutationFn: async (tenantId: number) => {
       const res = await api.get(Urls.USERS.GET_BY_TENANT(tenantId));
-      return res.data;
+      return res.data.data;
     },
   });
 
   // Update User
+  // Update User
   const updateUserMutation = useMutation({
     mutationFn: async (data: UpdateUserData) => {
-      const res = await api.put(Urls.USERS.UPDATE, data);
+      const res = await api.put(Urls.USERS.UPDATE, data); // <-- this is the actual PUT call
       return res.data;
     },
   });
-
   // Deactivate User
   const deactivateUserMutation = useMutation({
     mutationFn: async (id: number) => {
       const res = await api.delete(Urls.USERS.DEACTIVATE(id));
+      return res.data;
+    },
+  });
+
+  // Delete User
+  const deleteUserMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const res = await api.delete(Urls.USERS.DELETE(id));
       return res.data;
     },
   });
@@ -88,6 +93,7 @@ const useUsers = () => {
     getUsersByTenantMutation,
     updateUserMutation,
     deactivateUserMutation,
+    deleteUserMutation,
   };
 };
 

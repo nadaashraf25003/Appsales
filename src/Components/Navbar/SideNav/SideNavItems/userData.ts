@@ -29,7 +29,7 @@ export const userData = {
       items: [
         // { title: "Dashboard", url: "/erp" },
         { title: "Profile", url: "/erp/profile" },
-        { title: "Notifications", url: "/erp/notifications" },
+        // { title: "Notifications", url: "/erp/notifications" },
         { title: "Logout", url: "/logout" },
       ],
     },
@@ -41,16 +41,17 @@ export const userData = {
         items: [
           // { title: "Dashboard", icon: "Dashboard", url: "/erp" },
           { title: "Profile", icon: "AccountCircle", url: "/erp/profile" },
-          {
-            title: "Analytics",
-            icon: "Analytics",
-            url: "/erp/dashboard/analytics",
-          },
+          // {
+          //   title: "Analytics",
+          //   icon: "Analytics",
+          //   url: "/erp/dashboard/analytics",
+          // },
           {
             title: "Activities",
             icon: "Notifications",
             url: "/erp/dashboard/activities",
           },
+          { title: "Customers", icon: "People", url: "/erp/sales/customers" },
         ],
       },
 
@@ -64,16 +65,16 @@ export const userData = {
             icon: "ShoppingCart",
             url: "/erp/dashboard/sales-chart",
           },
-          {
-            title: "Recent Orders",
-            icon: "AssignmentReturn",
-            url: "/erp/dashboard/recent-orders",
-          },
-          {
-            title: "Activities",
-            icon: "People",
-            url: "/erp/dashboard/activities",
-          },
+          // {
+          //   title: "Recent Orders",
+          //   icon: "AssignmentReturn",
+          //   url: "/erp/dashboard/recent-orders",
+          // },
+          // {
+          //   title: "Activities",
+          //   icon: "People",
+          //   url: "/erp/dashboard/activities",
+          // },
         ],
       },
       {
@@ -87,7 +88,6 @@ export const userData = {
             icon: "AssignmentReturn",
             url: "/erp/sales/returns",
           },
-          { title: "Customers", icon: "People", url: "/erp/sales/customers" },
         ],
       },
 
@@ -139,6 +139,7 @@ export const userData = {
         section: "Organization",
         icon: "Apartment",
         items: [
+          { title: "Users", icon: "Group", url: "/erp/users" },
           { title: "Branches", icon: "Add", url: "/erp/branches" },
           { title: "Create Branch", icon: "Add", url: "/erp/branches/create" },
           { title: "Tenants", icon: "Domain", url: "/erp/tenants" },
@@ -146,20 +147,19 @@ export const userData = {
         ],
       },
 
-      {
-        section: "Settings",
-        icon: "Settings",
-        items: [
-          { title: "General", icon: "Settings", url: "/erp/settings/general" },
-          { title: "Financial", icon: "Paid", url: "/erp/settings/financial" },
-          { title: "Users", icon: "Group", url: "/erp/settings/users" },
-          // {
-          //   title: "Organization",
-          //   icon: "Apartment",
-          //   url: "/erp/settings/organization",
-          // },
-        ],
-      },
+      // {
+      //   section: "Settings",
+      //   icon: "Settings",
+      //   items: [
+      //     { title: "General", icon: "Settings", url: "/erp/settings/general" },
+      //     { title: "Financial", icon: "Paid", url: "/erp/settings/financial" },
+      //     // {
+      //     //   title: "Organization",
+      //     //   icon: "Apartment",
+      //     //   url: "/erp/settings/organization",
+      //     // },
+      //   ],
+      // },
     ],
 
     /* Reference mapping for breadcrumbs or lookups */
