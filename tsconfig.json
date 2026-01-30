@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": true,
+    "checkJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    
+    /* ✅ Fix 1: Change 'Node' to 'bundler' for modern tools like Vite */
+    "moduleResolution": "bundler", 
+    "allowImportingTsExtensions": true,
+    
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* ✅ Fix 2: Remove 'baseUrl' (or keep it and ignore the deprecation if you prefer) */
+    /* TypeScript 5.0+ prefers paths relative to the config file location */
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "images.d.ts"],
+  "exclude": ["node_modules"]
+}
