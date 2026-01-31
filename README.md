@@ -1,21 +1,27 @@
+# Appsales ERP
 
-# Appsales
-=======
-=======
+**Enterprise Resource Planning (ERP) System**
 
-# React + Vite
+Appsales ERP is a comprehensive system designed to manage **sales, branches, customers, and reporting** efficiently for businesses and stores. It provides a fast, interactive, and user-friendly interface built with **React** and **Vite**, following best practices for scalable frontend development.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Sales Management:** Create, update, cancel, and track orders easily.
+- **Order Status Tracking:** Manage orders with statuses like Pending, Completed, or Canceled.
+- **Branch & Customer Management:** Organize branches and customers with advanced filtering and reporting.
+- **Financial Overview:** Track paid amounts, discounts, taxes, and generate summaries.
+- **User Management:** Register and track user actions in the system.
+- **Interactive UI:** Hot Module Replacement (HMR) for fast development and instant updates.
+- **Reusable React Components:** Modular design for scalability and maintainability.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ERP Modules
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. **Sales Module** – Create orders, manage order details, track payments, and handle returns.
+2. **Branches Module** – View and manage all company branches with orders filtering.
+3. **Customers Module** – Track customers, order history, and balances.
+4. **Reports Module** – Generate sales summaries, branch performance, and financial reports.
+5. **User & Authentication Module** – Manage users, permissions, and access control.
