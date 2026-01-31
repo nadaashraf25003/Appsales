@@ -24,6 +24,7 @@ import Dropdown from "@/Components/Global/Dropdown";
 import { mailItems, notificationItems, profileItems } from "./DropdownItems";
 import { clearToken } from "@/API/token";
 import { useNavigate } from "react-router-dom";
+import { Button } from "antd";
 
 // Styled Search Components
 const Search = styled("div")(({ theme }) => ({
@@ -70,12 +71,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function TopNav({ toggleSidebar, sidebarOpen }) {
   const [openDropdown, setOpenDropdown] = useState(null);
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Toggle dropdown menus
   const handleToggleDropdown = (type) => {
     setOpenDropdown(openDropdown === type ? null : type);
   };
-
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      // Navigate to products page with search as query param
+      navigate(
+        `/erp/inventory/items`,
+      );
+      setSearchTerm(""); // optional: clear input
+    }
+  };
   // Logout handler
   const handleLogout = () => {
     clearToken(); // Remove accessToken from localStorage
@@ -128,9 +138,13 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
               <SearchIcon className="text-gray-500" />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search here..."
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSearch();
+              }}
               inputProps={{ "aria-label": "search" }}
-              className="text-gray-800 dark:text-light"
             />
           </Search>
         </Box>
@@ -138,7 +152,7 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
         {/* Right Side Icons */}
         <Box className="flex items-center space-x-2 relative">
           {/* Mail */}
-          <div className="relative">
+          {/* <div className="relative">
             <IconButton
               color="inherit"
               className="text-gray-600 dark:text-gray-300"
@@ -153,10 +167,10 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
               onClose={() => setOpenDropdown(null)}
               items={mailItems}
             />
-          </div>
+          </div> */}
 
           {/* Notifications */}
-          <div className="relative">
+          {/* <div className="relative">
             <IconButton
               color="inherit"
               className="text-gray-600 dark:text-gray-300"
@@ -171,8 +185,51 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
               onClose={() => setOpenDropdown(null)}
               items={notificationItems}
             />
-          </div>
+          </div> */}
+          {/* Right Side Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+  {/* Add Order Button */}
+  <button
+    onClick={() => navigate("/erp/orders/new")}
+    className="btn-primary flex items-center justify-center gap-2 px-4 py-2.5 sm:px-2 sm:py-2 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl w-full sm:w-auto"
+  >
+    <svg
+      className="w-4 h-4 sm:w-5 sm:h-5"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M12 4v16m8-8H4"
+      />
+    </svg>
+    <span className="text-sm sm:text-base font-medium">Add Order</span>
+  </button>
 
+  {/* Add Customer Button */}
+  <button
+    onClick={() => navigate("/erp/customers/new")}
+    className="btn-secondary flex items-center justify-center gap-2 px-4 py-2.5 sm:px-2 sm:py-2 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl w-full sm:w-auto"
+  >
+    <svg
+      className="w-4 h-4 sm:w-5 sm:h-5"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M18 9a3 3 0 11-6 0 3 3 0 016 0zm-9 3v6a3 3 0 003 3h6a3 3 0 003-3v-6"
+      />
+    </svg>
+    <span className="text-sm sm:text-base font-medium">Add Customer</span>
+  </button>
+</div>
           {/* Profile */}
           <div className="relative">
             <IconButton
@@ -188,7 +245,11 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
               items={profileItems.map((item) => {
                 if (item.label === "Logout") {
                   return { ...item, onClick: handleLogout }; // keep logout handler
-                } else if (item.label === "Profile" && item.url) {
+                } else if (
+                  item.label === "Profile" ||
+                  item.label === "Dashboard" ||
+                  (item.label === "Home" && item.url)
+                ) {
                   return {
                     ...item,
                     onClick: () => {

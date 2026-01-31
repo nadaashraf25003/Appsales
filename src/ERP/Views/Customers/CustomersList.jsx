@@ -147,6 +147,15 @@ const hasAccess =
                 Manage all your customers, view balances, and track transactions
               </p>
             </div>
+             <button
+              onClick={() => navigate('/erp/sales/customers/add')}
+              className="btn-primary flex items-center gap-2 text-sm md:text-base py-3 px-6"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              Add New Customer
+            </button>
           </div>
         </div>
 

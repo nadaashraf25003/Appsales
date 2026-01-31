@@ -52,15 +52,12 @@ const userRole: Role = user?.role || "SuperAdmin";
    Role-based filter
 ======================= */
 
-function filterSideNavByRole(
-  sideNav: NavSection[],
-  role: Role
-): NavSection[] {
+function filterSideNavByRole(sideNav: NavSection[], role: Role): NavSection[] {
   return sideNav
     .map((section) => ({
       ...section,
       items: section.items.filter(
-        (item) => !item.roles || item.roles.includes(role)
+        (item) => !item.roles || item.roles.includes(role),
       ),
     }))
     .filter((section) => section.items.length > 0);
@@ -89,7 +86,13 @@ const sideNav: NavSection[] = [
         title: "Customers",
         icon: "People",
         url: "/erp/sales/customers",
-        roles: ["SuperAdmin", "TenantOwner", "BranchManager", "Accountant", "Cashier"],
+        roles: [
+          "SuperAdmin",
+          "TenantOwner",
+          "BranchManager",
+          "Accountant",
+          "Cashier",
+        ],
       },
     ],
   },
@@ -126,19 +129,19 @@ const sideNav: NavSection[] = [
         title: "POS",
         icon: "PointOfSale",
         url: "/erp/sales/pos",
-        roles: ["Cashier", "BranchManager","SuperAdmin"],
+        roles: ["Cashier", "BranchManager", "SuperAdmin"],
       },
       {
         title: "Orders",
         icon: "ShoppingCart",
         url: "/erp/sales/orders",
-        roles: ["BranchManager", "TenantOwner", "SuperAdmin"],
+        // roles: ["BranchManager", "TenantOwner", "SuperAdmin"],
       },
       {
         title: "Returns",
         icon: "AssignmentReturn",
         url: "/erp/sales/returns",
-        roles: ["BranchManager", "SuperAdmin"],
+        roles: ["BranchManager", "SuperAdmin", "TenantOwner"],
       },
     ],
   },
@@ -154,15 +157,21 @@ const sideNav: NavSection[] = [
         roles: ["SuperAdmin", "TenantOwner", "BranchManager"],
       },
       {
-        title: "Categories",
+        title: "Raw Materials",
         icon: "Category",
-        url: "/erp/inventory/categories",
+        url: "/erp/inventory/materials",
+        roles: ["SuperAdmin", "TenantOwner", "BranchManager"],
       },
-      {
-        title: "Suppliers",
-        icon: "LocalShipping",
-        url: "/erp/inventory/suppliers",
-      },
+      // {
+      //   title: "Categories",
+      //   icon: "Category",
+      //   url: "/erp/inventory/categories",
+      // },
+      // {
+      //   title: "Suppliers",
+      //   icon: "LocalShipping",
+      //   url: "/erp/inventory/suppliers",
+      // },
     ],
   },
 
@@ -173,21 +182,21 @@ const sideNav: NavSection[] = [
       {
         title: "Dashboard",
         icon: "AccountBalance",
-        url: "/erp/accounting",
+        url: "/erp/accounting/dashboard",
         roles: ["SuperAdmin", "Accountant"],
       },
       {
         title: "Expenses",
         icon: "Receipt",
         url: "/erp/accounting/expenses",
-        roles: ["Accountant"],
-      },
-      {
-        title: "Reports",
-        icon: "Assessment",
-        url: "/erp/accounting/reports",
         roles: ["SuperAdmin", "Accountant"],
       },
+      // {
+      //   title: "Reports",
+      //   icon: "Assessment",
+      //   url: "/erp/accounting/reports",
+      //   roles: ["SuperAdmin", "Accountant"],
+      // },
       {
         title: "Statements",
         icon: "BarChart",
@@ -233,6 +242,17 @@ const sideNav: NavSection[] = [
       },
     ],
   },
+
+  //  {
+  //       section: "Settings",
+  //       icon: "Settings",
+  //       items: [
+  //         { title: "General", icon: "Settings", url: "/erp/settings/general" },
+  //         { title: "Financial", icon: "Paid", url: "/erp/settings/financial" },
+  //         { title: "Users", icon: "Group", url: "/erp/settings/users" },
+  //         { title: "Organization", icon: "Apartment", url: "/erp/settings/organization" },
+  //       ],
+  //     },
 ];
 
 /* =======================

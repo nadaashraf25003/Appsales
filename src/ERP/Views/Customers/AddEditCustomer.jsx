@@ -6,6 +6,7 @@ import useCustomers from '@/Hooks/useCustomers';
 const AddEditCustomer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const isEditMode = Boolean(id);
   const [form, setForm] = useState({
     name: '',
     phone: '',
@@ -22,7 +23,7 @@ const AddEditCustomer = () => {
 
   // Load customer data if editing
   useEffect(() => {
-    if (id) {
+    if (!id) return;
       setIsLoading(true);
       getCustomerByIdMutation.mutate(id, {
         onSuccess: (data) => {
@@ -44,7 +45,7 @@ const AddEditCustomer = () => {
         },
       });
     }
-  }, [id]);
+  , [id]);
 
   const validateForm = () => {
     const newErrors = {};

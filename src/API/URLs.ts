@@ -74,11 +74,11 @@ const Urls = {
   },
 
   ITEMS: {
-    GET_ALL: "api/item",
-    GET_BY_ID: (id: number) => `api/item/${id}`,
-    CREATE: "api/item",
-    UPDATE: (id: number) => `api/item/${id}`,
-    DELETE: (id: number) => `api/item/${id}`,
+    GET_ALL: "item",
+    GET_BY_ID: (id: number) => `item/${id}`,
+    CREATE: "item",
+    UPDATE: (id: number) => `item/${id}`,
+    DELETE: (id: number) => `item/${id}`,
   },
 
   MATERIALS: {

@@ -39,7 +39,7 @@ api.interceptors.response.use(
         return api.request(error.config);
       } catch (err) {
         clearToken();
-        window.location.href = "/";
+        window.location.href = "/erp/auth/login";
         return Promise.reject(err);
       }
     }

@@ -6,6 +6,7 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { HomeIcon } from "lucide-react";
 
 // Mail dropdown
 export const mailItems = [
@@ -23,6 +24,7 @@ export const notificationItems = [
 // Profile dropdown - attach logout in TopNav dynamically
 export const profileItems = [
   { label: "Profile", icon: PersonIcon, url: "/erp/profile" },
-  { label: "Settings", icon: SettingsIcon, url: "/erp/settings" },
+  { label: "Dashboard", icon: SettingsIcon, url: "/erp/dashboard/home" },
+  { label: "Home", icon: HomeIcon, url: "/" },
   { label: "Logout", icon: LogoutIcon, variant: "danger" }, // onClick added in TopNav
 ];

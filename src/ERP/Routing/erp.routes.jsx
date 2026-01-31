@@ -8,6 +8,8 @@ import { customerRoutes } from "./customers.routes";
 import { accountingRoutes } from "./accounting.routes";
 import { tenantsRoutes } from "./tenants.routes";
 import { branchesRoutes } from "./branches.routes";
+import { inventoryRoutes } from "./inventory.routes";
+import { settingsRoutes } from "./settings.routes";
 
 // Lazy load ERP layout
 const ERPLayout = lazy(() => import("@/ERP/Views/ERPLayout"));
@@ -50,6 +52,8 @@ export const erpRoutes = [
       ...accountingRoutes,
       ...tenantsRoutes,
       ...branchesRoutes,
+       ...inventoryRoutes, 
+      ...settingsRoutes, 
     ],
   },
 ];

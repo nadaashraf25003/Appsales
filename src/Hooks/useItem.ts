@@ -16,6 +16,8 @@ export interface ItemDto {
 }
 
 export interface CreateItemDto {
+  tenantId: number;
+  branchId: number;
   name: string;
   sellingPrice: number;
   currentStock: number;
@@ -25,9 +27,20 @@ export interface CreateItemDto {
   sku?: string;
   barcode?: string;
   image?: string;
+  costPrice?: number;
 }
 
-export interface UpdateItemDto extends CreateItemDto {
+export interface UpdateItemDto {
+  name: string;
+  sellingPrice: number;
+  currentStock: number;
+  minStockLevel?: number;
+  categoryId?: number;
+  description?: string;
+  sku?: string;
+  barcode?: string;
+  image?: string;
+  costPrice?: number;
   isActive: boolean;
 }
 
@@ -47,14 +60,15 @@ const useItem = () => {
       },
     });
 
-  // Fetch single item by ID
-  const getItemQuery = (id: number) =>
+  // Fetch single item by ID with options
+  const getItemQuery = (id: number, options?: { enabled?: boolean }) =>
     useQuery({
       queryKey: ["item", id],
       queryFn: async () => {
         const res = await api.get(`${Urls.ITEMS.GET_BY_ID(id)}`);
         return res.data as ItemDto;
       },
+      ...options,
     });
 
   // Create item
@@ -63,8 +77,8 @@ const useItem = () => {
       const res = await api.post(Urls.ITEMS.CREATE, data);
       return res.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["items"] });
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["items", variables.tenantId] });
     },
   });
 
@@ -74,8 +88,9 @@ const useItem = () => {
       const res = await api.put(Urls.ITEMS.UPDATE(id), data);
       return res.data;
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["items"] });
+      queryClient.invalidateQueries({ queryKey: ["item", (variables as any).id] });
     },
   });
 

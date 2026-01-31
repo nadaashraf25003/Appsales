@@ -8,4 +8,6 @@ export const customerRoutes = [
   { path: "sales/customers", element: <CustomersList /> },
   { path: "sales/customers/:id", element: <CustomerDetails /> },
   { path: "sales/customers/:id/edit", element: <AddEditCustomer /> },
+  { path: "sales/customers/add", element: <AddEditCustomer /> },
+
 ];

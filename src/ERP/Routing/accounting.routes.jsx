@@ -9,7 +9,7 @@ const FinancialStatements = lazy(() => import("../Views/Accounting/FinancialStat
 
 export const accountingRoutes = [
   {
-    path: "accounting",
+    path: "accounting/dashboard",
     element: <AccountingDashboard />,
   },
   {

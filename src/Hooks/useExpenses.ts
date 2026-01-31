@@ -54,12 +54,18 @@ const useExpenses = () => {
   });
 
   // Create Expense
-  const createExpenseMutation = useMutation({
-    mutationFn: async (data: CreateExpenseData) => {
+ const createExpenseMutation = useMutation({
+  mutationFn: async (data: CreateExpenseData) => {
+    try {
       const res = await api.post(Urls.EXPENSES.CREATE, data);
+      console.log("API Response:", res.data); // <-- debug
       return res.data;
-    },
-  });
+    } catch (err) {
+      console.error("API POST Error:", err);
+      throw err;
+    }
+  },
+});
 
   // Update Expense
   const updateExpenseMutation = useMutation({
@@ -83,7 +89,7 @@ const useExpenses = () => {
     queryKey: ["expenses", tenantId],
     queryFn: async () => {
       const res = await api.get(Urls.EXPENSES.GET_ALL, {
-        params: { tenantId },
+        params: { tenantId , branchId: undefined },
       });
       return res.data;
     },
