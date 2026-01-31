@@ -139,6 +139,16 @@ const useSales = () => {
     },
     enabled: !!tenantId,
   });
+
+  const getOrderByIdQuery = (id: number) =>
+  useQuery({
+    queryKey: ["order", id],
+    queryFn: async () => {
+      const res = await api.get(Urls.SALES.GET_ORDER_BY_ID(id));
+      return res.data;
+    },
+    enabled: !!id,
+  });
   return {
     createOrderMutation,
     updateOrderMutation,
@@ -150,7 +160,9 @@ const useSales = () => {
     getAllOrdersMutation,
 
     getOrdersByTenantQuery,
+    getOrderByIdQuery
   };
 };
 
 export default useSales;
+  

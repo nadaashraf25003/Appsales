@@ -80,9 +80,7 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
   const handleSearch = () => {
     if (searchTerm.trim()) {
       // Navigate to products page with search as query param
-      navigate(
-        `/erp/inventory/items`,
-      );
+      navigate(`/erp/inventory/items`);
       setSearchTerm(""); // optional: clear input
     }
   };
@@ -151,85 +149,79 @@ export default function TopNav({ toggleSidebar, sidebarOpen }) {
 
         {/* Right Side Icons */}
         <Box className="flex items-center space-x-2 relative">
-          {/* Mail */}
-          {/* <div className="relative">
-            <IconButton
-              color="inherit"
-              className="text-gray-600 dark:text-gray-300"
-              onClick={() => handleToggleDropdown("mail")}
+          {/* Right Side Action Buttons - Responsive version */}
+          <div className="flex items-center gap-2">
+            {/* Add Order Button */}
+            <button
+              onClick={() => navigate("/erp/sales/pos")}
+              className="btn-primary flex items-center justify-center gap-1 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
+              aria-label="Add order"
             >
-              <Badge badgeContent={mailItems[0]?.badge} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <Dropdown
-              isOpen={openDropdown === "mail"}
-              onClose={() => setOpenDropdown(null)}
-              items={mailItems}
-            />
-          </div> */}
+              <svg
+                className="w-4 h-4 sm:w-5 sm:h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              {/* Text appears on medium screens and above */}
+              <span className="hidden md:inline text-sm font-medium">
+                Add order
+              </span>
+            </button>
 
-          {/* Notifications */}
-          {/* <div className="relative">
-            <IconButton
-              color="inherit"
-              className="text-gray-600 dark:text-gray-300"
-              onClick={() => handleToggleDropdown("notifications")}
+            {/* Add Customer Button - Hidden on small screens, shows on medium+ */}
+            <button
+              onClick={() => navigate("/erp/sales/customers/add")}
+              className="btn-secondary hidden md:flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
+              aria-label="Add customer"
             >
-              <Badge badgeContent={notificationItems[0]?.badge} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <Dropdown
-              isOpen={openDropdown === "notifications"}
-              onClose={() => setOpenDropdown(null)}
-              items={notificationItems}
-            />
-          </div> */}
-          {/* Right Side Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center gap-3">
-  {/* Add Order Button */}
-  <button
-    onClick={() => navigate("/erp/orders/new")}
-    className="btn-primary flex items-center justify-center gap-2 px-4 py-2.5 sm:px-2 sm:py-2 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl w-full sm:w-auto"
-  >
-    <svg
-      className="w-4 h-4 sm:w-5 sm:h-5"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M12 4v16m8-8H4"
-      />
-    </svg>
-    <span className="text-sm sm:text-base font-medium">Add Order</span>
-  </button>
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M18 9a3 3 0 11-6 0 3 3 0 016 0zm-9 3v6a3 3 0 003 3h6a3 3 0 003-3v-6"
+                />
+              </svg>
+              <span className="text-sm font-medium">
+                Add Customer
+              </span>
+            </button>
 
-  {/* Add Customer Button */}
-  <button
-    onClick={() => navigate("/erp/customers/new")}
-    className="btn-secondary flex items-center justify-center gap-2 px-4 py-2.5 sm:px-2 sm:py-2 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl w-full sm:w-auto"
-  >
-    <svg
-      className="w-4 h-4 sm:w-5 sm:h-5"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M18 9a3 3 0 11-6 0 3 3 0 016 0zm-9 3v6a3 3 0 003 3h6a3 3 0 003-3v-6"
-      />
-    </svg>
-    <span className="text-sm sm:text-base font-medium">Add Customer</span>
-  </button>
-</div>
+            {/* Mobile-only customer button - Icon only */}
+            <button
+              onClick={() => navigate("/erp/sales/customers/add")}
+              className="btn-secondary md:hidden flex items-center justify-center p-2.5 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
+              aria-label="Add customer"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M18 9a3 3 0 11-6 0 3 3 0 016 0zm-9 3v6a3 3 0 003 3h6a3 3 0 003-3v-6"
+                />
+              </svg>
+            </button>
+          </div>
+
           {/* Profile */}
           <div className="relative">
             <IconButton

@@ -129,7 +129,7 @@ const sideNav: NavSection[] = [
         title: "POS",
         icon: "PointOfSale",
         url: "/erp/sales/pos",
-        roles: ["Cashier", "BranchManager", "SuperAdmin"],
+        // roles: ["Cashier", "BranchManager", "SuperAdmin"],
       },
       {
         title: "Orders",
@@ -137,12 +137,12 @@ const sideNav: NavSection[] = [
         url: "/erp/sales/orders",
         // roles: ["BranchManager", "TenantOwner", "SuperAdmin"],
       },
-      {
-        title: "Returns",
-        icon: "AssignmentReturn",
-        url: "/erp/sales/returns",
-        roles: ["BranchManager", "SuperAdmin", "TenantOwner"],
-      },
+      // {
+      //   title: "Returns",
+      //   icon: "AssignmentReturn",
+      //   url: "/erp/sales/returns",
+      //   roles: ["BranchManager", "SuperAdmin", "TenantOwner"],
+      // },
     ],
   },
 
