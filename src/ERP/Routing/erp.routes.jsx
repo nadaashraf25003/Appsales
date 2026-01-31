@@ -8,7 +8,8 @@ import { customerRoutes } from "./customers.routes";
 import { accountingRoutes } from "./accounting.routes";
 import { tenantsRoutes } from "./tenants.routes";
 import { branchesRoutes } from "./branches.routes";
-import { inventoryRoutes } from "./inventory.routes"; // Added Inventory Module
+import { inventoryRoutes } from "./inventory.routes";
+import { settingsRoutes } from "./settings.routes"; // Added Settings Module
 
 // Lazy load ERP layout
 const ERPLayout = lazy(() => import("@/ERP/Views/ERPLayout"));
@@ -34,6 +35,8 @@ export const erpRoutes = [
         ),
         children: authRoutes,
       },
+      
+      // Profile Section
       {
         path: "profile",
         element: (
@@ -51,7 +54,8 @@ export const erpRoutes = [
       ...accountingRoutes,
       ...tenantsRoutes,
       ...branchesRoutes,
-      ...inventoryRoutes, // Spread Inventory routes: Products, Categories, Suppliers
+      ...inventoryRoutes, // Products, Categories, Suppliers, Materials
+      ...settingsRoutes,  // General, Financial, Users, Organization
     ],
   },
 ];
