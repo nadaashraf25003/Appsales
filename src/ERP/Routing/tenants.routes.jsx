@@ -1,4 +1,6 @@
 import Loader from "@/Components/Global/Loader";
+import { ROLES } from "@/Roles/roles";
+import withRole from "@/Roles/withRole";
 import React, { lazy, Suspense } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 
@@ -16,8 +18,8 @@ const withSuspense = (Component) => (
 );
 
 export const tenantsRoutes = [
-  { path: "tenants", element: withSuspense(TenantList) },
-  { path: "tenants/create", element: withSuspense(TenantCreate) },
-  { path: "tenants/:tenantId/edit", element: withSuspense(TenantEdit) },
-  { path: "tenants/:tenantId", element: withSuspense(TenantDetails) },
+  { path: "tenants", element: withRole(TenantList, [ROLES.SUPER_ADMIN , ROLES.TENANT_OWNER]) },
+  { path: "tenants/create", element: withRole(TenantCreate, [ROLES.SUPER_ADMIN, ROLES.TENANT_OWNER]) },
+  { path: "tenants/:tenantId/edit", element: withRole(TenantEdit, [ROLES.SUPER_ADMIN , ROLES.TENANT_OWNER]) },
+  { path: "tenants/:tenantId", element: withRole(TenantDetails, [ROLES.SUPER_ADMIN , ROLES.TENANT_OWNER]) },
 ];

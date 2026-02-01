@@ -13,6 +13,15 @@ export interface ItemDto {
   currentStock: number;
   minStockLevel?: number;
   isActive: boolean;
+  categoryId?: number;
+  description?: string;
+  sku?: string;
+  barcode?: string;
+  image?: string;
+  category?: any;
+  createdAt?: string;
+  updatedAt?: string;
+
 }
 
 export interface CreateItemDto {
@@ -29,7 +38,9 @@ export interface CreateItemDto {
 
 export interface UpdateItemDto extends CreateItemDto {
   isActive: boolean;
-}
+   currentStock: number;
+
+  }
 
 /* =======================
    Hook

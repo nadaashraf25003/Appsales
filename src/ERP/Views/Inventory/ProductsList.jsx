@@ -7,7 +7,7 @@ const ProductsList = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [inputTenantId, setInputTenantId] = useState("8");
-  const [tenantId, setTenantId] = useState(8);
+  const [tenantId, setTenantId] = useState(1);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
@@ -24,6 +24,7 @@ const ProductsList = () => {
   const { getItemsQuery, deleteItemMutation } = useItem();
   const { data: products, isLoading, isError, refetch, isFetching } = getItemsQuery(tenantId);
 
+  // console.log("Products Data:", products);
   // Load tenant ID
   const handleLoadTenant = () => {
     const newTenantId = parseInt(inputTenantId);

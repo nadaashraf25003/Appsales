@@ -1,5 +1,7 @@
 // src/ERP/Routing/branches.routes.tsx
 import Loader from "@/Components/Global/Loader";
+import { ROLES } from "@/Roles/roles";
+import withRole from "@/Roles/withRole";
 import React, { lazy, Suspense } from "react";
 
 // Branch Pages
@@ -16,8 +18,8 @@ const withSuspense = (Component: React.LazyExoticComponent<any>) => (
 );
 
 export const branchesRoutes = [
-  { path: "branches", element: withSuspense(BranchList) },
-  { path: "branches/create", element: withSuspense(BranchCreate) },
-  { path: "branches/:branchId/edit", element: withSuspense(BranchEdit) },
-  { path: "users", element: withSuspense(UsersList) },
+  { path: "branches", element: withRole(BranchList, [ROLES.SUPER_ADMIN, ROLES.BRANCH_MANAGER, ROLES.TENANT_OWNER]) },
+  { path: "branches/create", element: withRole(BranchCreate, [ROLES.SUPER_ADMIN, ROLES.BRANCH_MANAGER, ROLES.TENANT_OWNER]) },
+  { path: "branches/:branchId/edit", element: withRole(BranchEdit, [ROLES.SUPER_ADMIN, ROLES.BRANCH_MANAGER, ROLES.TENANT_OWNER]) },
+  { path: "users", element: withRole(UsersList, [ROLES.SUPER_ADMIN]  ) },
 ];

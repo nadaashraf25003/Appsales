@@ -113,11 +113,11 @@ const sideNav: NavSection[] = [
         url: "/erp/dashboard/sales-chart",
         roles: ["SuperAdmin", "TenantOwner", "Accountant"],
       },
-      {
-        title: "Recent Orders",
-        icon: "AssignmentReturn",
-        url: "/erp/dashboard/recent-orders",
-      },
+      // {
+      //   title: "Recent Orders",
+      //   icon: "AssignmentReturn",
+      //   url: "/erp/dashboard/recent-orders",
+      // },
     ],
   },
 

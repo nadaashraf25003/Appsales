@@ -31,7 +31,7 @@ const AddEditProduct = () => {
       enabled: isEdit && !isNaN(Number(id)),
     },
   );
-
+// console.log("Existing Product:", existingProduct);
   // Form state
   const [formData, setFormData] = useState({
     name: "",
@@ -69,6 +69,7 @@ const AddEditProduct = () => {
       });
     }
   }, [isEdit, existingProduct]);
+  // console.log("Form Data:", formData);
 
   // SKU validation
   const validateSku = (sku) => {
@@ -138,6 +139,7 @@ const AddEditProduct = () => {
             onSuccess: () => {
               // Success handled by Toast in hook
               navigate("/erp/inventory/items");
+              // console.log("Update successful", payload);
             },
           }
         );
@@ -371,11 +373,11 @@ const AddEditProduct = () => {
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
                 <span>Opening Stock Quantity *</span>
-                {isEdit && (
+                {/* {isEdit && (
                   <span className="text-xs text-gray-500" title="Stock should be adjusted via Inventory Logs for accuracy">
                     (Read-only)
                   </span>
-                )}
+                )} */}
               </label>
               <input
                 type="number"
@@ -385,7 +387,7 @@ const AddEditProduct = () => {
                 className="input text-sm md:text-base"
                 placeholder="0"
                 required
-                disabled={isLoading || isEdit}
+                // disabled={isLoading || isEdit}
               />
               <p className="text-xs text-gray-500">
                 Initial stock quantity

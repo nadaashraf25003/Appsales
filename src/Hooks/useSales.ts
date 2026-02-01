@@ -7,11 +7,30 @@ import Urls from "@/API/URLs";
    Types
 ======================= */
 
+export interface CreateOrderItemDto {
+  itemId: number;
+  itemVariantId: number;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+  notes?: string;
+}
+
 export interface CreateOrderData {
   tenantId: number;
   branchId: number;
-  items: Array<{ productId: number; quantity: number }>;
-  // add other fields needed by CreateOrderCommand
+  shiftId: number;
+  customerId: number;
+  orderType: string;
+  status: string;
+  subtotal: number;
+  taxAmount: number;
+  discountAmount: number;
+  totalAmount: number;
+  paidAmount: number;
+  notes?: string;
+  createdByUserId: number;
+  items: CreateOrderItemDto[];
 }
 
 export interface UpdateOrderData {

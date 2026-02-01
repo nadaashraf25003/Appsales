@@ -215,24 +215,32 @@ const hasAccess =
                           #{customer.id}
                         </span>
                       </div>
-                      <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
+                      {/* <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
                         Balance:{" "}
                         <span
                           className={`font-semibold ${customer.currentBalance >= 0 ? "text-success dark:text-dark-success" : "text-red-600 dark:text-red-400"}`}
                         >
                           {customer.currentBalance} EGP
                         </span>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3 md:gap-4">
-                    <div className="text-right">
+                    {/* <div className="text-right">
                       <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
                         Credit Limit
                       </div>
                       <div className="text-base md:text-lg font-bold text-gray-800 dark:text-light">
                         {customer.creditLimit || 0} EGP
+                      </div>
+                    </div> */}
+                    <div className="text-right">
+                      <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
+                        Email
+                      </div>
+                      <div className="text-base md:text-lg font-bold text-gray-800 dark:text-light">
+                        {customer.email}
                       </div>
                     </div>
                   </div>
@@ -243,7 +251,7 @@ const hasAccess =
         </div>
 
         {/* Statistics Cards - Mobile Stacked, Desktop Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+        {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
           <div className="card rounded-xl md:rounded-2xl p-3 md:p-4 lg:p-6 col-span-1">
             <div className="flex items-center justify-between">
               <div className="min-w-0">
@@ -367,7 +375,7 @@ const hasAccess =
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Tab Navigation - Responsive */}
         <div className="border-b border-gray-200 dark:border-gray-700 mb-4 md:mb-6">

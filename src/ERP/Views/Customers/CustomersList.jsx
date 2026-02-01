@@ -6,6 +6,7 @@ import useCustomers from "@/Hooks/useCustomers";
 const CustomersList = () => {
   const navigate = useNavigate();
   const { getAllCustomersQuery, deleteCustomerMutation } = useCustomers();
+  
   const {
     data: customers,
     isLoading,
@@ -27,7 +28,7 @@ const CustomersList = () => {
       (c.email || "").toLowerCase().includes(search.toLowerCase()) ||
       (c.taxId || "").includes(search),
   );
-
+// console.log('Filtered Data:', filteredData);
   // Filter by status
   const filteredByStatus = filteredData?.filter((customer) => {
     if (statusFilter === "active")
@@ -290,9 +291,9 @@ const hasAccess =
                       <th className="py-4 px-6 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                         Customer
                       </th>
-                      <th className="py-4 px-6 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      {/* <th className="py-4 px-6 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                         Balance
-                      </th>
+                      </th> */}
                    
                       <th className="py-4 px-6 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                         Type
@@ -337,7 +338,7 @@ const hasAccess =
                             </div>
                           </td>
                          
-                          <td className="py-4 px-6">
+                          {/* <td className="py-4 px-6">
                             <div
                               className={`font-bold ${customer.currentBalance >= 0 ? "text-success dark:text-dark-success" : "text-red-600 dark:text-red-400"}`}
                             >
@@ -346,7 +347,7 @@ const hasAccess =
                             <div className="text-xs text-gray-500 dark:text-gray-400">
                               Limit: {customer.creditLimit || 0} EGP
                             </div>
-                          </td>
+                          </td> */}
                         
                           <td className="py-4 px-6">
                             <span

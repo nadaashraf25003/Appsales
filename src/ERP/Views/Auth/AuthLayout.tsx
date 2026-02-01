@@ -7,7 +7,7 @@ const AuthLayout = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-info/5 dark:from-dark-bg dark:to-dark-card p-4">
-      <Toaster 
+      {/* <Toaster 
         position="top-center"
         toastOptions={{
           duration: 4000,
@@ -17,7 +17,7 @@ const AuthLayout = () => {
           },
           className: 'dark:bg-dark-card dark:text-light',
         }}
-      />
+      /> */}
       
       <div className="w-full max-w-md">
         <div className="card p-8">

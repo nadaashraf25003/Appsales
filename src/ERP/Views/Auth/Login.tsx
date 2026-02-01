@@ -30,14 +30,14 @@ const Login = () => {
   const onSubmit = (data: LoginForm) => {
     loginMutation.mutate(data, {
       onSuccess: (res) => {
-        console.log("Response from backend:", res);
+        // console.log("Response from backend:", res);
 
         // 1. Store token
         if (res.accessToken) {
           setToken(res.accessToken);
           localStorage.setItem("user", JSON.stringify(res.user));
    
-          console.log("Token stored successfully.");
+          // console.log("Token stored successfully.");
           // // Optional: dispatch event to update NavBar dynamically
           // window.dispatchEvent(new Event("storage"));
         }

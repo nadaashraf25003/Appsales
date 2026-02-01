@@ -11,12 +11,17 @@ const POSMain = () => {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const { getItemsQuery } = useItem();
+  const { getItemsQuery, updateItemMutation } = useItem();
   const { createOrderMutation } = useSales();
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [localProducts, setLocalProducts] = useState([]);
+
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  // console.log("Current User:", user.id);
 
   // Fetch products based on tenantId
   const { data: products, isLoading } = getItemsQuery(tenantId || 0);
+  console.log("Products:", products);
 
   // Cart state
   const [cart, setCart] = useState([]);
@@ -62,6 +67,25 @@ const POSMain = () => {
         },
       ];
     });
+    setLocalProducts((prev) =>
+      prev.map((p) =>
+        p.id === product.id
+          ? { ...p, currentQuantity: p.currentQuantity - 1 }
+          : p,
+      ),
+    );
+
+    // Reduce currentQuantity by 1
+    // updateItemMutation.mutate({
+    //   id: product.id,
+    //   data: {
+    //     name: product.name,
+    //     sellingPrice: product.sellingPrice || product.costPerUnit || 0,
+    //     currentStock: (product.currentQuantity || 0) - 1,
+    //     minStockLevel: product.minQuantity || 5,
+    //     isActive: product.isActive !== false,
+    //   },
+    // });
     // Open cart on mobile when adding item
     if (window.innerWidth < 768) {
       setIsCartOpen(true);
@@ -73,11 +97,15 @@ const POSMain = () => {
     setCart((prev) =>
       prev
         .map((item) => {
-          if (item.id === id) {
-            const newQty = item.quantity + delta;
-            return newQty > 0 ? { ...item, quantity: newQty } : null;
-          }
-          return item;
+          if (item.id !== id) return item;
+
+          const maxStock = item.currentQuantity ?? Infinity;
+          const newQty = item.quantity + delta;
+
+          if (newQty <= 0) return null;
+          if (newQty > maxStock) return item;
+
+          return { ...item, quantity: newQty };
         })
         .filter(Boolean),
     );
@@ -100,42 +128,52 @@ const POSMain = () => {
 
   // Handle payment
   const confirmCheckout = () => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+
     const payload = {
-      tenantId,
-      branchId: orderDetails.branchId,
+      tenantId: user.tenantId,
+      branchId: user.branchId,
       shiftId: orderDetails.shiftId,
       customerId: orderDetails.customerId,
       orderType: orderDetails.orderType,
       status: orderDetails.status,
+
       subtotal: totals.subtotal,
       taxAmount: totals.vat,
       discountAmount: orderDetails.discountAmount,
       totalAmount: totals.total - orderDetails.discountAmount,
       paidAmount: orderDetails.paidAmount,
+
       notes: orderDetails.notes,
-      createdAtId: 0,
-      items: cart.map((i) => ({
-        itemId: i.id,
-        itemVariantId: 0,
-        quantity: i.quantity,
-        unitPrice: i.sellingPrice || i.costPerUnit || 0,
-        totalPrice: (i.sellingPrice || i.costPerUnit || 0) * i.quantity,
-        notes: "",
-      })),
+      createdByUserId: user.id,
+
+      items: cart.map((item) => {
+        const unitPrice = item.sellingPrice || item.costPerUnit || 0;
+
+        return {
+          itemId: item.id,
+          itemVariantId: 0, // or real variant id later
+          quantity: item.quantity,
+          unitPrice,
+          totalPrice: unitPrice * item.quantity,
+          notes: "",
+        };
+      }),
     };
 
     createOrderMutation.mutate(payload, {
       onSuccess: () => {
-        alert("Order Created Successfully");
+        alert("Order Created Successfully ✅");
         setCart([]);
         setIsCheckoutOpen(false);
       },
-      onError: (e) => {
-        console.error(e);
-        alert("Order Failed");
+      onError: (error) => {
+        console.error(error);
+        alert("Failed to create order ❌");
       },
     });
   };
+
   const handleOrderChange = (key, value) => {
     setOrderDetails((prev) => ({
       ...prev,
@@ -145,8 +183,8 @@ const POSMain = () => {
 
   // Filter products
   const filteredProducts = useMemo(() => {
-    if (!products) return [];
-    return products.filter((p) => {
+    if (!localProducts) return [];
+    return localProducts.filter((p) => {
       const matchesSearch = p.name
         ?.toLowerCase()
         .includes(search.toLowerCase());
@@ -154,8 +192,13 @@ const POSMain = () => {
         selectedCategory === "All" || p.category === selectedCategory;
       return matchesSearch && matchesCategory && p.isActive !== false;
     });
-  }, [products, search, selectedCategory]);
+  }, [localProducts, search, selectedCategory]);
 
+  useEffect(() => {
+    if (products) {
+      setLocalProducts(products);
+    }
+  }, [products]);
   // Calculate totals
   const totals = useMemo(() => {
     const subtotal = cart.reduce(
@@ -362,6 +405,7 @@ const POSMain = () => {
                       onClick={() => addToCart(product)}
                       className="card p-3 text-left hover:shadow-lg transition-shadow active:scale-[0.98]"
                       disabled={(product.currentQuantity || 0) === 0}
+                      //  disabled={product.quantity >= product.currentQuantity}
                     >
                       {/* Product Image/Icon */}
                       <div className="aspect-square mb-3 rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 flex items-center justify-center relative">
@@ -527,6 +571,7 @@ const POSMain = () => {
                         </span>
                         <button
                           onClick={() => updateQuantity(item.id, 1)}
+                          disabled={item.quantity >= item.currentQuantity}
                           className="w-8 h-8 flex items-center justify-center border rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
                           <span className="text-lg">+</span>
@@ -659,22 +704,27 @@ const POSMain = () => {
       )}
 
       {isCheckoutOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
-          <div className="bg-white dark:bg-dark-card rounded-xl w-full max-w-2xl lg:max-w-4xl shadow-2xl">
-            <div className="max-h-[80vh] overflow-y-auto">
-              <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-                {/* Header */}
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4 mt-16">
+          <div className="bg-white dark:bg-dark-card rounded-2xl w-full max-w-4xl shadow-2xl">
+            <div className="max-h-[85vh] overflow-y-auto">
+              {/* Header */}
+              <div className="sticky top-0 bg-white dark:bg-dark-card border-b border-gray-200 dark:border-gray-700 px-6 py-4">
                 <div className="flex justify-between items-center">
-                  <h2 className="text-xl sm:text-2xl font-bold text-dark dark:text-light">
-                    Complete Order Details
-                  </h2>
+                  <div>
+                    <h2 className="text-2xl font-bold text-dark dark:text-light">
+                      Complete Checkout
+                    </h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      Review and confirm order details
+                    </p>
+                  </div>
                   <button
                     onClick={() => setIsCheckoutOpen(false)}
-                    className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                     aria-label="Close"
                   >
                     <svg
-                      className="w-5 h-5"
+                      className="w-6 h-6"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -688,347 +738,16 @@ const POSMain = () => {
                     </svg>
                   </button>
                 </div>
+              </div>
 
-                {/* Form Grid - Wider Layout */}
-                <div className="space-y-4 sm:space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                    {/* Branch ID */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Branch ID
-                      </label>
-                      <input
-                        type="number"
-                        className="input w-full"
-                        placeholder="Enter Branch ID"
-                        value={orderDetails.branchId}
-                        onChange={(e) =>
-                          handleOrderChange("branchId", +e.target.value)
-                        }
-                        min="0"
-                      />
-                    </div>
-
-                    {/* Shift ID */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Shift ID
-                      </label>
-                      <input
-                        type="number"
-                        className="input w-full"
-                        placeholder="Enter Shift ID"
-                        value={orderDetails.shiftId}
-                        onChange={(e) =>
-                          handleOrderChange("shiftId", +e.target.value)
-                        }
-                        min="0"
-                      />
-                    </div>
-
-                    {/* Customer ID */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Customer ID
-                      </label>
-                      <input
-                        type="number"
-                        className="input w-full"
-                        placeholder="Customer ID (0 = Walk-in)"
-                        value={orderDetails.customerId}
-                        onChange={(e) =>
-                          handleOrderChange("customerId", +e.target.value)
-                        }
-                        min="0"
-                      />
-                    </div>
-
-                    {/* Order Type */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Order Type
-                      </label>
-                      <select
-                        className="input w-full"
-                        value={orderDetails.orderType}
-                        onChange={(e) =>
-                          handleOrderChange("orderType", e.target.value)
-                        }
-                      >
-                        <option value="DineIn">Dine In</option>
-                        <option value="TakeAway">Take Away</option>
-                        <option value="Delivery">Delivery</option>
-                      </select>
-                    </div>
-
-                    {/* Status */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Status
-                      </label>
-                      <select
-                        className="input w-full"
-                        value={orderDetails.status}
-                        onChange={(e) =>
-                          handleOrderChange("status", e.target.value)
-                        }
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Cancelled">Cancelled</option>
-                      </select>
-                    </div>
-
-                    {/* Discount */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Discount (EGP)
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="number"
-                          className="input w-full pl-10"
-                          placeholder="0.00"
-                          value={orderDetails.discountAmount}
-                          onChange={(e) =>
-                            handleOrderChange("discountAmount", +e.target.value)
-                          }
-                          min="0"
-                          step="0.01"
-                        />
-                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                          EGP
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Paid Amount */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Paid Amount (EGP)
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="number"
-                          className="input w-full pl-10"
-                          placeholder="0.00"
-                          value={orderDetails.paidAmount}
-                          onChange={(e) =>
-                            handleOrderChange("paidAmount", +e.target.value)
-                          }
-                          min="0"
-                          step="0.01"
-                        />
-                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                          EGP
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Tax Rate (if needed) */}
-                    <div className="sm:col-span-2 lg:col-span-1">
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        VAT Rate
-                      </label>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="number"
-                          className="input w-full"
-                          value="14"
-                          disabled
-                          readOnly
-                        />
-                        <span className="text-gray-500 whitespace-nowrap">
-                          %
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Notes */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Order Notes
-                    </label>
-                    <textarea
-                      className="input w-full min-h-[100px]"
-                      placeholder="Add any special instructions or notes for this order..."
-                      value={orderDetails.notes}
-                      onChange={(e) =>
-                        handleOrderChange("notes", e.target.value)
-                      }
-                    />
-                  </div>
-
-                  {/* Order Summary - Wider Layout */}
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
-                    <h3 className="text-lg font-bold text-dark dark:text-light mb-4">
-                      Order Summary
-                    </h3>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      {/* Left Column - Items */}
-                      <div className="sm:col-span-2">
-                        <div className="space-y-2">
-                          <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Cart Items ({cart.length})
-                          </h4>
-                          {cart.slice(0, 3).map((item, index) => (
-                            <div
-                              key={item.id}
-                              className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
-                            >
-                              <div className="flex-1">
-                                <div className="font-medium text-dark dark:text-light">
-                                  {item.name}
-                                </div>
-                                <div className="text-sm text-gray-500">
-                                  {item.quantity} ×{" "}
-                                  {formatCurrency(
-                                    item.sellingPrice || item.costPerUnit || 0,
-                                  )}
-                                </div>
-                              </div>
-                              <div className="font-bold">
-                                {formatCurrency(
-                                  (item.sellingPrice || item.costPerUnit || 0) *
-                                    item.quantity,
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                          {cart.length > 3 && (
-                            <div className="pt-2 text-sm text-gray-500">
-                              + {cart.length - 3} more items
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Right Column - Totals */}
-                      <div className="space-y-3">
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">
-                              Subtotal
-                            </span>
-                            <span className="font-medium">
-                              {formatCurrency(totals.subtotal)}
-                            </span>
-                          </div>
-
-                          <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">
-                              VAT (14%)
-                            </span>
-                            <span className="text-gray-500 dark:text-gray-400">
-                              {formatCurrency(totals.vat)}
-                            </span>
-                          </div>
-
-                          {orderDetails.discountAmount > 0 && (
-                            <div className="flex justify-between">
-                              <span className="text-gray-600 dark:text-gray-400">
-                                Discount
-                              </span>
-                              <span className="text-green-600 dark:text-green-400 font-medium">
-                                -{formatCurrency(orderDetails.discountAmount)}
-                              </span>
-                            </div>
-                          )}
-
-                          {/* Total */}
-                          <div className="border-t border-gray-200 dark:border-gray-700 pt-3 mt-2">
-                            <div className="flex justify-between items-center">
-                              <span className="text-lg font-bold text-dark dark:text-light">
-                                Total Amount
-                              </span>
-                              <span className="text-xl font-bold text-primary dark:text-dark-primary">
-                                {formatCurrency(
-                                  totals.total - orderDetails.discountAmount,
-                                )}
-                              </span>
-                            </div>
-
-                            {/* Change due calculation */}
-                            {orderDetails.paidAmount > 0 && (
-                              <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-700">
-                                <div className="flex justify-between items-center text-sm">
-                                  <span className="text-gray-600 dark:text-gray-400">
-                                    Paid Amount
-                                  </span>
-                                  <span className="font-medium">
-                                    {formatCurrency(orderDetails.paidAmount)}
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center text-sm mt-1">
-                                  <span className="text-gray-600 dark:text-gray-400">
-                                    Change Due
-                                  </span>
-                                  <span
-                                    className={`font-bold ${
-                                      orderDetails.paidAmount >=
-                                      totals.total - orderDetails.discountAmount
-                                        ? "text-green-600 dark:text-green-400"
-                                        : "text-red-600 dark:text-red-400"
-                                    }`}
-                                  >
-                                    {formatCurrency(
-                                      orderDetails.paidAmount -
-                                        (totals.total -
-                                          orderDetails.discountAmount),
-                                    )}
-                                  </span>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <button
-                    className="btn-secondary py-3 px-6 text-base font-medium w-full sm:w-auto"
-                    onClick={() => setIsCheckoutOpen(false)}
-                    disabled={createOrderMutation.isPending}
-                  >
-                    Cancel
-                  </button>
-
-                  <button
-                    onClick={confirmCheckout}
-                    className="btn-primary py-3 px-6 text-base font-medium w-full sm:w-auto flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={createOrderMutation.isPending}
-                  >
-                    {createOrderMutation.isPending ? (
-                      <>
-                        <svg
-                          className="animate-spin h-5 w-5 text-white"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          />
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          />
-                        </svg>
-                        <span>Processing...</span>
-                      </>
-                    ) : (
-                      <>
+              <div className="p-6">
+                {/* Two-column layout for better organization */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Left Column - Order Information */}
+                  <div className="lg:col-span-2 space-y-6">
+                    {/* Order Details Card */}
+                    <div className="card p-5">
+                      <h3 className="text-lg font-semibold text-dark dark:text-light mb-4 flex items-center gap-2">
                         <svg
                           className="w-5 h-5"
                           fill="none"
@@ -1039,13 +758,410 @@ const POSMain = () => {
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth={2}
-                            d="M5 13l4 4L19 7"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
                           />
                         </svg>
-                        <span>Confirm Order</span>
-                      </>
-                    )}
-                  </button>
+                        Order Details
+                      </h3>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {/* Shift ID */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Shift ID <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            className="input w-full"
+                            placeholder="Enter Shift ID"
+                            value={orderDetails.shiftId}
+                            onChange={(e) =>
+                              handleOrderChange("shiftId", +e.target.value)
+                            }
+                            min="0"
+                            required
+                          />
+                        </div>
+
+                        {/* Customer ID */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Customer ID
+                          </label>
+                          <div className="relative">
+                            <input
+                              type="number"
+                              className="input w-full"
+                              placeholder="0 = Walk-in Customer"
+                              value={orderDetails.customerId}
+                              onChange={(e) =>
+                                handleOrderChange("customerId", +e.target.value)
+                              }
+                              min="0"
+                            />
+                            {orderDetails.customerId === 0 && (
+                              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                                Walk-in
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Order Type */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Order Type
+                          </label>
+                          <div className="flex gap-2">
+                            {["DineIn", "TakeAway", "Delivery"].map((type) => (
+                              <button
+                                key={type}
+                                type="button"
+                                onClick={() =>
+                                  handleOrderChange("orderType", type)
+                                }
+                                className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
+                                  orderDetails.orderType === type
+                                    ? "bg-primary text-white"
+                                    : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                                }`}
+                              >
+                                {type.replace(/([A-Z])/g, " $1").trim()}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Status */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Status
+                          </label>
+                          <select
+                            className="input w-full"
+                            value={orderDetails.status}
+                            onChange={(e) =>
+                              handleOrderChange("status", e.target.value)
+                            }
+                          >
+                            <option value="Pending">Pending</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Preparing">Preparing</option>
+                            <option value="Ready">Ready</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Canceled">Canceled</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Payment Details Card */}
+                    <div className="card p-5">
+                      <h3 className="text-lg font-semibold text-dark dark:text-light mb-4 flex items-center gap-2">
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                          />
+                        </svg>
+                        Payment Details
+                      </h3>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {/* Discount */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Discount (EGP)
+                          </label>
+                          <div className="relative">
+                            <input
+                              type="number"
+                              className="input w-full"
+                              placeholder="0.00"
+                              value={orderDetails.discountAmount}
+                              onChange={(e) =>
+                                handleOrderChange(
+                                  "discountAmount",
+                                  +e.target.value,
+                                )
+                              }
+                              min="0"
+                              step="0.01"
+                            />
+                            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                              EGP
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Paid Amount */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Paid Amount (EGP)
+                          </label>
+                          <div className="relative">
+                            <input
+                              type="number"
+                              className="input w-full"
+                              placeholder="0.00"
+                              value={orderDetails.paidAmount}
+                              onChange={(e) =>
+                                handleOrderChange("paidAmount", +e.target.value)
+                              }
+                              min="0"
+                              step="0.01"
+                            />
+                            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                              EGP
+                            </span>
+                          </div>
+                          {orderDetails.paidAmount > 0 &&
+                            orderDetails.paidAmount <
+                              totals.total - orderDetails.discountAmount && (
+                              <p className="text-red-500 text-xs mt-1">
+                                Paid amount is less than total
+                              </p>
+                            )}
+                        </div>
+                      </div>
+
+                      {/* Notes */}
+                      <div className="mt-4">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Order Notes
+                        </label>
+                        <textarea
+                          className="input w-full min-h-[80px]"
+                          placeholder="Add special instructions or notes..."
+                          value={orderDetails.notes}
+                          onChange={(e) =>
+                            handleOrderChange("notes", e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column - Order Summary */}
+                  <div className="space-y-6">
+                    {/* Order Items Summary */}
+                    <div className="card p-5">
+                      <h3 className="text-lg font-semibold text-dark dark:text-light mb-4">
+                        Order Items
+                      </h3>
+                      <div className="space-y-3 max-h-[200px] overflow-y-auto pr-2">
+                        {cart.map((item) => (
+                          <div
+                            key={item.id}
+                            className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                          >
+                            <div className="flex-1">
+                              <div className="font-medium text-dark dark:text-light text-sm truncate">
+                                {item.name}
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                {item.quantity} ×{" "}
+                                {formatCurrency(
+                                  item.sellingPrice || item.costPerUnit || 0,
+                                )}
+                              </div>
+                            </div>
+                            <div className="font-bold text-sm">
+                              {formatCurrency(
+                                (item.sellingPrice || item.costPerUnit || 0) *
+                                  item.quantity,
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                        {cart.length > 5 && (
+                          <div className="text-center text-sm text-gray-500 pt-2">
+                            + {cart.length - 5} more items
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Payment Summary */}
+                    <div className="card p-5 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+                      <h3 className="text-lg font-semibold text-dark dark:text-light mb-4">
+                        Payment Summary
+                      </h3>
+
+                      <div className="space-y-3">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600 dark:text-gray-400">
+                            Subtotal
+                          </span>
+                          <span>{formatCurrency(totals.subtotal)}</span>
+                        </div>
+
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600 dark:text-gray-400">
+                            VAT (14%)
+                          </span>
+                          <span>{formatCurrency(totals.vat)}</span>
+                        </div>
+
+                        {orderDetails.discountAmount > 0 && (
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-600 dark:text-gray-400">
+                              Discount
+                            </span>
+                            <span className="text-green-600 dark:text-green-400 font-medium">
+                              -{formatCurrency(orderDetails.discountAmount)}
+                            </span>
+                          </div>
+                        )}
+
+                        <div className="border-t border-gray-200 dark:border-gray-700 pt-3 mt-2">
+                          <div className="flex justify-between items-center">
+                            <span className="font-bold text-dark dark:text-light">
+                              Total Amount
+                            </span>
+                            <span className="text-xl font-bold text-primary dark:text-dark-primary">
+                              {formatCurrency(
+                                totals.total - orderDetails.discountAmount,
+                              )}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Change Due */}
+                        {orderDetails.paidAmount > 0 && (
+                          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-sm text-gray-600 dark:text-gray-400">
+                                Paid Amount
+                              </span>
+                              <span className="font-medium">
+                                {formatCurrency(orderDetails.paidAmount)}
+                              </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm text-gray-600 dark:text-gray-400">
+                                Change Due
+                              </span>
+                              <span
+                                className={`text-lg font-bold ${
+                                  orderDetails.paidAmount >=
+                                  totals.total - orderDetails.discountAmount
+                                    ? "text-green-600 dark:text-green-400"
+                                    : "text-red-600 dark:text-red-400"
+                                }`}
+                              >
+                                {formatCurrency(
+                                  orderDetails.paidAmount -
+                                    (totals.total -
+                                      orderDetails.discountAmount),
+                                )}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Quick Payment Buttons */}
+                      <div className="mt-6 grid grid-cols-3 gap-2">
+                        {[100, 200, 500].map((amount) => (
+                          <button
+                            key={amount}
+                            type="button"
+                            onClick={() =>
+                              handleOrderChange("paidAmount", amount)
+                            }
+                            className="py-2 text-sm bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                          >
+                            {amount} EGP
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex flex-col-reverse sm:flex-row justify-end gap-4">
+                    <button
+                      className="btn-secondary py-3 px-8 text-base font-medium w-full sm:w-auto"
+                      onClick={() => setIsCheckoutOpen(false)}
+                      disabled={createOrderMutation.isPending}
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      onClick={confirmCheckout}
+                      className="btn-primary py-3 px-8 text-base font-medium w-full sm:w-auto flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={
+                        createOrderMutation.isPending || !orderDetails.shiftId
+                      }
+                    >
+                      {createOrderMutation.isPending ? (
+                        <>
+                          <svg
+                            className="animate-spin h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            />
+                          </svg>
+                          Processing Order...
+                        </>
+                      ) : (
+                        <>
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7M5 13l4 4L19 7"
+                            />
+                          </svg>
+                          Confirm & Create Order
+                          <span className="text-sm font-normal opacity-90">
+                            (
+                            {formatCurrency(
+                              totals.total - orderDetails.discountAmount,
+                            )}
+                            )
+                          </span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Validation Message */}
+                  {!orderDetails.shiftId && (
+                    <p className="text-red-500 text-sm text-center mt-3">
+                      Please enter Shift ID to continue
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

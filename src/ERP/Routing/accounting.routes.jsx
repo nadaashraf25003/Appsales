@@ -1,3 +1,5 @@
+import { ROLES } from "@/Roles/roles";
+import withRole from "@/Roles/withRole";
 import { lazy } from "react";
 
 // All files are in the same directory: src/ERP/Views/Accounting/
@@ -10,26 +12,26 @@ const FinancialStatements = lazy(() => import("../Views/Accounting/FinancialStat
 export const accountingRoutes = [
   {
     path: "accounting/dashboard",
-    element: <AccountingDashboard />,
+    element: withRole(AccountingDashboard, [ROLES.SUPER_ADMIN, ROLES.ACCOUNTANT]),
   },
   {
     path: "accounting/expenses",
-    element: <ExpensesList />,
+    element: withRole(ExpensesList, [ROLES.SUPER_ADMIN, ROLES.ACCOUNTANT]),
   },
   {
     path: "accounting/expenses/add",
-    element: <AddEditExpense />,
+    element: withRole(AddEditExpense, [ROLES.SUPER_ADMIN, ROLES.ACCOUNTANT]),
   },
   {
     path: "accounting/expenses/:id/edit",
-    element: <AddEditExpense />,
+    element: withRole(AddEditExpense, [ROLES.SUPER_ADMIN, ROLES.ACCOUNTANT]),
   },
   {
     path: "accounting/reports",
-    element: <ReportsDashboard />,
+    element: withRole(ReportsDashboard, [ROLES.SUPER_ADMIN, ROLES.ACCOUNTANT]),
   },
   {
     path: "accounting/statements",
-    element: <FinancialStatements />,
+    element: withRole(FinancialStatements, [ROLES.SUPER_ADMIN, ROLES.ACCOUNTANT]),
   },
 ];

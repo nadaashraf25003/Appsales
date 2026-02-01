@@ -32,7 +32,7 @@ const AddEditCustomer = () => {
             phone: data.phone || '',
             email: data.email || '',
             type: data.type || 'regular',
-            creditLimit: data.creditLimit ? data.creditLimit.toString() : '',
+            initialBalance: data.creditLimit ? data.creditLimit.toString() : '',
             taxId: data.taxId || '',
             billingAddress: data.billingAddress || '',
           });
