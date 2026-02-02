@@ -17,7 +17,7 @@ export const registerSchema = loginSchema.extend({
 });
 
 export const verifySchema = z.object({
-  email: z.string().email(),
+  // email: z.string().email(),
   code: z.string().length(6, "Code must be 6 digits"),
 });
 

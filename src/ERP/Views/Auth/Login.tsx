@@ -36,7 +36,7 @@ const Login = () => {
         if (res.accessToken) {
           setToken(res.accessToken);
           localStorage.setItem("user", JSON.stringify(res.user));
-   
+
           // console.log("Token stored successfully.");
           // // Optional: dispatch event to update NavBar dynamically
           // window.dispatchEvent(new Event("storage"));
@@ -47,9 +47,11 @@ const Login = () => {
 
         // 3. Navigate to ERP dashboard
         navigate("/erp");
-         window.location.reload();
+        window.location.reload();
       },
-      onError: () => toast.error("Invalid credentials"),
+      onError: (error: any) => {
+        toast.error(error.response?.data?.message || "Login failed");
+      },
     });
   };
 

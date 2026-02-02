@@ -143,14 +143,14 @@ export default function TopNav() {
               ) : (
                 <div className="space-y-3">
                   <Link
-                    to="/erp/dashboard"
+                    to="/erp/dashboard/home"
                     className="block text-center btn-primary py-3 font-medium"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Go to Dashboard
                   </Link>
                   <Link
-                    to="/shop"
+                    to="/erp/sales/pos"
                     className="block text-center text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-dark-primary transition-colors py-3 font-medium"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >

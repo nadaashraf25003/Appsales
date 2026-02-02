@@ -99,6 +99,7 @@ const Register = () => {
 
     registerMutation.mutate(payload, {
       onSuccess: (res) => {
+        localStorage.setItem("tempEmail", data.email);
         toast.success(res.message || "Account created successfully!");
         navigate("/erp/auth/verify-email");
       },

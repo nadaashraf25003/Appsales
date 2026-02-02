@@ -114,14 +114,15 @@ const Activities = () => {
       }
     });
   };
- const statusMap = {
-  Pending: "Pending",
-  Completed: "Completed",
-  Cancelled: "Cancelled",
-  Ready: "Ready",
-  Preparing: "Preparing",
-  Confirmed: "Confirmed",
-};
+
+  const statusMap = {
+    Pending: "Pending",
+    Completed: "Completed",
+    Cancelled: "Cancelled",
+    Ready: "Ready",
+    Preparing: "Preparing",
+    Confirmed: "Confirmed",
+  };
 
   // Map data to activities
   const allActivities = useMemo(() => {
@@ -150,7 +151,6 @@ const Activities = () => {
       type: "customer",
       title: `New Customer`,
       description: `${customer.name} registered`,
-      // amount: `Balance: $${customer.currentBalance?.toFixed(2) || "0.00"}`,
       time: new Date(customer.createdAt || Date.now()),
       status: "registered",
       user: customer.name,
@@ -231,7 +231,7 @@ const Activities = () => {
     } else if (diffDays < 7) {
       return `${diffDays}d ago`;
     } else {
-      return activityDate.toLocaleDateString();
+      return activityDate.toLocaleDateString([], { month: 'short', day: 'numeric' });
     }
   };
 
@@ -252,18 +252,18 @@ const Activities = () => {
   // Tenant Modal Component
   const TenantModal = () => (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full transform transition-all">
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md mx-auto transform transition-all">
+        <div className="p-4 md:p-6">
+          <div className="flex justify-between items-center mb-4 md:mb-6">
+            <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
               Switch Tenant
             </h3>
             <button
               onClick={() => setShowTenantModal(false)}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1"
             >
               <svg
-                className="w-6 h-6"
+                className="w-5 h-5 md:w-6 md:h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -288,7 +288,7 @@ const Activities = () => {
                 value={tenantIdInput}
                 onChange={(e) => setTenantIdInput(e.target.value)}
                 min="1"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 md:px-4 py-2 md:py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base md:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="e.g., 1"
                 autoFocus
               />
@@ -307,7 +307,7 @@ const Activities = () => {
                       setTenantIdInput(id.toString());
                       handleTenantChange(id);
                     }}
-                    className={`px-4 py-2 rounded-lg transition-colors ${
+                    className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg transition-colors text-sm md:text-base ${
                       tenantId === id
                         ? "bg-blue-600 text-white"
                         : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
@@ -319,23 +319,23 @@ const Activities = () => {
               </div>
             </div>
 
-            <div className="flex gap-3 pt-4">
+            <div className="flex gap-2 md:gap-3 pt-4">
               <button
                 type="button"
                 onClick={() => setShowTenantModal(false)}
-                className="flex-1 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                className="flex-1 px-3 py-2 md:px-4 md:py-3 text-sm md:text-base text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                className="flex-1 px-3 py-2 md:px-4 md:py-3 bg-blue-600 text-white text-sm md:text-base rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
                 {isLoading ? (
                   <>
                     <svg
-                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      className="animate-spin -ml-1 mr-2 h-4 w-4 md:h-5 md:w-5 text-white"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -369,7 +369,7 @@ const Activities = () => {
 
   if (loading && allActivities.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
           <p className="mt-4 text-gray-600 dark:text-gray-400">
@@ -381,18 +381,18 @@ const Activities = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-3 md:p-4 lg:p-6 xl:p-8">
       {showTenantModal && <TenantModal />}
 
       <div className="max-w-7xl mx-auto animate-slideDown">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-6">
+        <div className="mb-6 md:mb-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6 mb-4 md:mb-6">
             <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+              <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
+                <div className="p-1.5 md:p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
                   <svg
-                    className="w-6 h-6 text-purple-600 dark:text-purple-400"
+                    className="w-4 h-4 md:w-6 md:h-6 text-purple-600 dark:text-purple-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -405,24 +405,24 @@ const Activities = () => {
                     />
                   </svg>
                 </div>
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
                   Activity Log
                 </h1>
               </div>
-              <p className="text-gray-600 dark:text-gray-400 ml-12">
+              <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 ml-8 md:ml-12">
                 Track all recent activities across the system
               </p>
             </div>
 
             {/* Tenant ID Display & Switch Button */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 md:gap-3 w-full md:w-auto">
               <button
                 onClick={() => setShowTenantModal(true)}
-                className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow flex items-center gap-3 group w-full sm:w-auto"
+                className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl p-3 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow flex items-center gap-2 md:gap-3 group flex-1 xs:flex-none"
               >
-                <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                <div className="p-1.5 md:p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
                   <svg
-                    className="w-5 h-5 text-blue-600 dark:text-blue-400"
+                    className="w-3.5 h-3.5 md:w-5 md:h-5 text-blue-600 dark:text-blue-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -435,16 +435,16 @@ const Activities = () => {
                     />
                   </svg>
                 </div>
-                <div className="text-left">
-                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                <div className="text-left flex-1 min-w-0">
+                  <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
                     Current Tenant
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-lg font-bold text-gray-900 dark:text-white">
+                  <div className="flex items-center gap-1 md:gap-2">
+                    <div className="text-base md:text-lg font-bold text-gray-900 dark:text-white truncate">
                       #{tenantId}
                     </div>
                     <svg
-                      className="w-4 h-4 text-gray-400 transition-transform group-hover:rotate-180"
+                      className="w-3 h-3 md:w-4 md:h-4 text-gray-400 flex-shrink-0 transition-transform group-hover:rotate-180"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -462,17 +462,16 @@ const Activities = () => {
 
               <button
                 onClick={() => {
-                  // Refresh data for current tenant
                   setIsLoading(true);
                   refetchOrders();
                   refetchExpenses();
                   setTimeout(() => setIsLoading(false), 500);
                 }}
                 disabled={isLoading}
-                className="px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 w-full sm:w-auto"
+                className="px-3 py-2 md:px-4 md:py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg md:rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center gap-1.5 md:gap-2 w-full xs:w-auto"
               >
                 <svg
-                  className={`w-5 h-5 text-gray-600 dark:text-gray-400 ${isLoading ? "animate-spin" : ""}`}
+                  className={`w-3.5 h-3.5 md:w-5 md:h-5 text-gray-600 dark:text-gray-400 ${isLoading ? "animate-spin" : ""}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -484,7 +483,7 @@ const Activities = () => {
                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                   />
                 </svg>
-                <span className="text-gray-700 dark:text-gray-300 font-medium">
+                <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300 font-medium whitespace-nowrap">
                   {isLoading ? "Refreshing..." : "Refresh"}
                 </span>
               </button>
@@ -492,13 +491,13 @@ const Activities = () => {
           </div>
 
           {/* Type Filter */}
-          <div className="flex justify-between items-center">
-            <div className="inline-flex rounded-lg border border-gray-200 dark:border-gray-700 p-1">
+          <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-3">
+            <div className="inline-flex rounded-lg border border-gray-200 dark:border-gray-700 p-1 overflow-x-auto">
               {["all", "order", "customer", "expense"].map((filter) => (
                 <button
                   key={filter}
                   onClick={() => setTypeFilter(filter)}
-                  className={`px-4 py-2 text-sm font-medium rounded-md transition-colors capitalize ${
+                  className={`px-2.5 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium rounded-md transition-colors capitalize whitespace-nowrap ${
                     typeFilter === filter
                       ? "bg-purple-600 text-white"
                       : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -509,31 +508,31 @@ const Activities = () => {
               ))}
             </div>
 
-            <div className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 text-right">
               Data for Tenant #{tenantId}
             </div>
           </div>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 lg:gap-6 mb-6 md:mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl p-4 md:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="min-w-0">
+                <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-1 truncate">
                   Total Activities
                 </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                <p className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate">
                   {stats.total}
                 </p>
               </div>
-              <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
-                <span className="text-2xl text-blue-600 dark:text-blue-400">
+              <div className="p-2 md:p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg md:rounded-xl flex-shrink-0">
+                <span className="text-lg md:text-2xl text-blue-600 dark:text-blue-400">
                   📊
                 </span>
               </div>
             </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 truncate">
               <span className="font-medium text-green-600 dark:text-green-400">
                 {stats.today}
               </span>{" "}
@@ -541,85 +540,85 @@ const Activities = () => {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+          <div className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl p-4 md:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="min-w-0">
+                <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-1 truncate">
                   Orders
                 </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                <p className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate">
                   {stats.orders}
                 </p>
               </div>
-              <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-xl">
-                <span className="text-2xl text-green-600 dark:text-green-400">
+              <div className="p-2 md:p-3 bg-green-100 dark:bg-green-900/30 rounded-lg md:rounded-xl flex-shrink-0">
+                <span className="text-lg md:text-2xl text-green-600 dark:text-green-400">
                   📦
                 </span>
               </div>
             </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 truncate">
               Order activities
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+          <div className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl p-4 md:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="min-w-0">
+                <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-1 truncate">
                   Customers
                 </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                <p className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate">
                   {stats.customers}
                 </p>
               </div>
-              <div className="p-3 bg-orange-100 dark:bg-orange-900/30 rounded-xl">
-                <span className="text-2xl text-orange-600 dark:text-orange-400">
+              <div className="p-2 md:p-3 bg-orange-100 dark:bg-orange-900/30 rounded-lg md:rounded-xl flex-shrink-0">
+                <span className="text-lg md:text-2xl text-orange-600 dark:text-orange-400">
                   👤
                 </span>
               </div>
             </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 truncate">
               Customer registrations
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+          <div className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl p-4 md:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="min-w-0">
+                <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-1 truncate">
                   Expenses
                 </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                <p className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate">
                   {stats.expenses}
                 </p>
               </div>
-              <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-xl">
-                <span className="text-2xl text-red-600 dark:text-red-400">
+              <div className="p-2 md:p-3 bg-red-100 dark:bg-red-900/30 rounded-lg md:rounded-xl flex-shrink-0">
+                <span className="text-lg md:text-2xl text-red-600 dark:text-red-400">
                   💰
                 </span>
               </div>
             </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 truncate">
               Expense records
             </div>
           </div>
         </div>
 
         {/* Activity Feed */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden mb-6 md:mb-8">
           {/* Activity Header */}
-          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <div className="p-4 md:p-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="min-w-0">
+                <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white truncate">
                   Recent Activities
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-1 truncate">
                   Showing {filteredActivities.length} of {allActivities.length}{" "}
                   activities
                 </p>
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
                 Last updated:{" "}
                 {new Date().toLocaleTimeString([], {
                   hour: "2-digit",
@@ -630,16 +629,16 @@ const Activities = () => {
           </div>
 
           {/* Activity List */}
-          <div className="divide-y divide-gray-200 dark:divide-gray-700 max-h-[600px] overflow-y-auto">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700 max-h-[400px] md:max-h-[500px] lg:max-h-[600px] overflow-y-auto">
             {filteredActivities.map((activity) => (
               <div
                 key={activity.id}
-                className="p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group"
+                className="p-3 md:p-4 lg:p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group"
               >
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-2 md:gap-3 lg:gap-4">
                   {/* Icon */}
                   <div
-                    className={`p-3 rounded-xl ${
+                    className={`p-2 md:p-3 rounded-lg md:rounded-xl flex-shrink-0 ${
                       activity.type === "order"
                         ? "bg-green-100 dark:bg-green-900/30"
                         : activity.type === "customer"
@@ -647,39 +646,41 @@ const Activities = () => {
                           : "bg-red-100 dark:bg-red-900/30"
                     }`}
                   >
-                    <span className="text-xl">{activity.icon}</span>
+                    <span className="text-base md:text-xl">{activity.icon}</span>
                   </div>
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="font-semibold text-gray-900 dark:text-white">
-                        {activity.title}
-                      </h3>
-                      <span
-                        className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(activity.status)}`}
-                      >
-                        {activity.status}
-                      </span>
-                      <span className="ml-auto text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex flex-col xs:flex-row xs:items-start xs:justify-between gap-1 md:gap-2 mb-1 md:mb-2">
+                      <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
+                        <h3 className="text-sm md:text-base font-semibold text-gray-900 dark:text-white truncate">
+                          {activity.title}
+                        </h3>
+                        <span
+                          className={`px-1.5 py-0.5 md:px-2 md:py-1 text-xs font-medium rounded-full ${getStatusColor(activity.status)}`}
+                        >
+                          {activity.status}
+                        </span>
+                      </div>
+                      <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap xs:self-start">
                         {formatTime(activity.time)}
                       </span>
                     </div>
 
-                    <p className="text-gray-600 dark:text-gray-400 mb-3">
+                    <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-2 md:mb-3 line-clamp-2">
                       {activity.description}
                     </p>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-                          <span className="text-sm text-gray-700 dark:text-gray-300">
+                    <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-2 md:gap-3">
+                      <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+                        <div className="flex items-center gap-1.5 md:gap-2">
+                          <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-gray-300 dark:bg-gray-600 flex-shrink-0"></div>
+                          <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300 truncate max-w-[120px] md:max-w-none">
                             {activity.user}
                           </span>
                         </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
-                          {activity.time.toLocaleDateString()} at{" "}
+                        <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 hidden sm:block">
+                          {activity.time.toLocaleDateString([], { month: 'short', day: 'numeric' })} at{" "}
                           {activity.time.toLocaleTimeString([], {
                             hour: "2-digit",
                             minute: "2-digit",
@@ -688,7 +689,7 @@ const Activities = () => {
                       </div>
 
                       <div
-                        className={`text-lg font-bold ${
+                        className={`text-sm md:text-base font-bold truncate ${
                           activity.type === "expense"
                             ? "text-red-600 dark:text-red-400"
                             : "text-green-600 dark:text-green-400"
@@ -699,10 +700,10 @@ const Activities = () => {
                     </div>
                   </div>
 
-                  {/* Action Button */}
-                  <button className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                  {/* Action Button - Mobile Only */}
+                  <button className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg md:hidden flex-shrink-0">
                     <svg
-                      className="w-5 h-5 text-gray-400"
+                      className="w-4 h-4 text-gray-400"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -720,10 +721,10 @@ const Activities = () => {
             ))}
 
             {filteredActivities.length === 0 && (
-              <div className="p-12 text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+              <div className="p-6 md:p-8 lg:p-12 text-center">
+                <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
                   <svg
-                    className="w-8 h-8 text-gray-400"
+                    className="w-6 h-6 md:w-8 md:h-8 text-gray-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -736,19 +737,19 @@ const Activities = () => {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-1 md:mb-2">
                   No activities found
                 </h3>
-                <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+                <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto">
                   There are no activities for Tenant #{tenantId}. Try switching
                   to a different tenant.
                 </p>
                 <button
                   onClick={() => setShowTenantModal(true)}
-                  className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors inline-flex items-center gap-2"
+                  className="mt-3 md:mt-4 px-3 py-1.5 md:px-4 md:py-2 bg-blue-600 text-white text-xs md:text-sm rounded-lg hover:bg-blue-700 transition-colors inline-flex items-center gap-1.5 md:gap-2"
                 >
                   <svg
-                    className="w-4 h-4"
+                    className="w-3 h-3 md:w-4 md:h-4"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -768,9 +769,9 @@ const Activities = () => {
 
           {/* Activity Footer */}
           {filteredActivities.length > 0 && (
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
-              <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
-                <div>
+            <div className="p-3 md:p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+              <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-2 text-xs md:text-sm text-gray-600 dark:text-gray-400">
+                <div className="truncate">
                   Showing{" "}
                   <span className="font-medium text-gray-900 dark:text-white">
                     {filteredActivities.length}
@@ -779,10 +780,10 @@ const Activities = () => {
                   {typeFilter !== "all" && ` (${typeFilter}s only)`}
                   for Tenant #{tenantId}
                 </div>
-                <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium flex items-center gap-1">
+                <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium flex items-center gap-1 whitespace-nowrap">
                   View all activities
                   <svg
-                    className="w-4 h-4"
+                    className="w-3 h-3 md:w-4 md:h-4"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -801,17 +802,17 @@ const Activities = () => {
         </div>
 
         {/* Activity Types Legend */}
-        <div className="mt-8 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl p-4 md:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 md:mb-4">
+            <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white">
               Activity Types
             </h3>
             <button
               onClick={() => setShowTenantModal(true)}
-              className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium flex items-center gap-1"
+              className="text-xs md:text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium flex items-center gap-1 self-start sm:self-auto"
             >
               <svg
-                className="w-4 h-4"
+                className="w-3 h-3 md:w-4 md:h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -826,42 +827,42 @@ const Activities = () => {
               Change Tenant
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-              <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                <span className="text-xl">📦</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+            <div className="flex items-center gap-2 md:gap-3 p-2.5 md:p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+              <div className="p-1.5 md:p-2 bg-green-100 dark:bg-green-900/30 rounded-lg flex-shrink-0">
+                <span className="text-base md:text-xl">📦</span>
               </div>
-              <div>
-                <div className="font-medium text-gray-900 dark:text-white">
+              <div className="min-w-0">
+                <div className="text-sm md:text-base font-medium text-gray-900 dark:text-white truncate">
                   Order Activities
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
                   New orders, status updates, completions
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-              <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                <span className="text-xl">👤</span>
+            <div className="flex items-center gap-2 md:gap-3 p-2.5 md:p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+              <div className="p-1.5 md:p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex-shrink-0">
+                <span className="text-base md:text-xl">👤</span>
               </div>
-              <div>
-                <div className="font-medium text-gray-900 dark:text-white">
+              <div className="min-w-0">
+                <div className="text-sm md:text-base font-medium text-gray-900 dark:text-white truncate">
                   Customer Activities
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
                   New registrations, profile updates
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-              <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
-                <span className="text-xl">💰</span>
+            <div className="flex items-center gap-2 md:gap-3 p-2.5 md:p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg sm:col-span-2 lg:col-span-1">
+              <div className="p-1.5 md:p-2 bg-red-100 dark:bg-red-900/30 rounded-lg flex-shrink-0">
+                <span className="text-base md:text-xl">💰</span>
               </div>
-              <div>
-                <div className="font-medium text-gray-900 dark:text-white">
+              <div className="min-w-0">
+                <div className="text-sm md:text-base font-medium text-gray-900 dark:text-white truncate">
                   Expense Activities
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
                   New expenses, updates, deletions
                 </div>
               </div>
@@ -870,13 +871,14 @@ const Activities = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
+        <div className="mt-6 md:mt-8 text-center text-xs md:text-sm text-gray-500 dark:text-gray-400 space-y-1">
           <p>Activity log automatically refreshes every 5 minutes</p>
-          <p className="mt-1">
-            Tenant #{tenantId} • Last sync: {new Date().toLocaleTimeString()} •
+          <p className="flex flex-wrap items-center justify-center gap-1">
+            <span>Tenant #{tenantId} •</span>
+            <span>Last sync: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} •</span>
             <button
               onClick={() => setShowTenantModal(true)}
-              className="ml-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
             >
               Switch tenant
             </button>
