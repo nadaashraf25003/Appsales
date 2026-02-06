@@ -8,6 +8,10 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { HomeIcon } from "lucide-react";
 
+// Get user role from localStorage
+const user = localStorage.getItem("user");
+const role = user ? JSON.parse(user).role : null;
+
 // Mail dropdown
 export const mailItems = [
   { label: "Inbox", icon: InboxIcon, badge: 3 },
@@ -24,7 +28,11 @@ export const notificationItems = [
 // Profile dropdown - attach logout in TopNav dynamically
 export const profileItems = [
   { label: "Profile", icon: PersonIcon, url: "/erp/profile" },
-  { label: "Dashboard", icon: SettingsIcon, url: "/erp/dashboard/home" },
+  {
+    label: "Dashboard",
+    icon: SettingsIcon,
+    url: role === "Cashier" ? "/erp/profile" : "/erp/dashboard/home",
+  },
   { label: "Home", icon: HomeIcon, url: "/" },
   { label: "Logout", icon: LogoutIcon, variant: "danger" }, // onClick added in TopNav
 ];

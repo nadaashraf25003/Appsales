@@ -16,6 +16,9 @@ export default function TopNav() {
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
+  // Get user role from localStorage
+  const user = localStorage.getItem("user");
+  const role = user ? JSON.parse(user).role : null;
 
   const navLinks = [
     { label: "Features", href: "#benefits" },
@@ -29,7 +32,6 @@ export default function TopNav() {
     <nav className="fixed top-0 w-full z-50 bg-white/95 dark:bg-dark-bg/95 backdrop-blur-lg border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
-          
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2">
@@ -69,6 +71,7 @@ export default function TopNav() {
                   >
                     Sign In
                   </Link>
+                  
                   <Link
                     to="/erp/auth/register"
                     className="btn-primary px-6 py-2 text-sm"
@@ -87,7 +90,7 @@ export default function TopNav() {
                     Visit Store
                   </Link>
                   <Link
-                    to="/erp/dashboard/home"
+                    to={role === "Cashier" ? "/erp/profile" : "/erp/dashboard/home"}
                     className="btn-primary px-6 py-2 text-sm"
                   >
                     Dashboard
@@ -102,7 +105,11 @@ export default function TopNav() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="md:hidden text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-dark-primary transition-colors"
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>
@@ -121,7 +128,7 @@ export default function TopNav() {
                 {link.label}
               </a>
             ))}
-            
+
             <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
               {!isLoggedIn ? (
                 <div className="space-y-3">
@@ -141,9 +148,10 @@ export default function TopNav() {
                   </Link>
                 </div>
               ) : (
+
                 <div className="space-y-3">
                   <Link
-                    to="/erp/dashboard/home"
+                    to={role === "Cashier" ? "/erp/profile" : "/erp/dashboard/home"}
                     className="block text-center btn-primary py-3 font-medium"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >

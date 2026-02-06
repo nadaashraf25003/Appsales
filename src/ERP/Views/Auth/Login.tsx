@@ -46,7 +46,7 @@ const Login = () => {
         toast.success("Logged in successfully");
 
         // 3. Navigate to ERP dashboard
-        navigate("/erp");
+        navigate("/erp/profile");
         window.location.reload();
       },
       onError: (error: any) => {

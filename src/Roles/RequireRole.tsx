@@ -19,7 +19,7 @@ const RequireRole = ({ allowedRoles, children }: Props) => {
   }
 
   // role not allowed
-  if (!allowedRoles.includes(role)) {
+if (!allowedRoles.map(r => r.toLowerCase()).includes(role?.toLowerCase())) {
     return <Navigate to="/unauthorized" replace />;
   }
 

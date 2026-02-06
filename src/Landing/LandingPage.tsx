@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import TopNav from "./TopNavLanding";
-import { 
-  ShoppingCart, 
-  Users, 
-  Package, 
-  BarChart3, 
-  CreditCard, 
-  Receipt, 
-  Settings, 
-  Database, 
+import {
+  ShoppingCart,
+  Users,
+  Package,
+  BarChart3,
+  CreditCard,
+  Receipt,
+  Settings,
+  Database,
   ArrowRight,
   Cpu,
   Rocket,
@@ -22,77 +22,81 @@ import {
   Building,
   Cloud,
   Lock,
-  RefreshCw
+  RefreshCw,
 } from "lucide-react";
 
 export default function ERPLandingPage() {
   const isLoggedIn = !!localStorage.getItem("accessToken");
 
+  // Get user role from localStorage
+  const user = localStorage.getItem("user");
+  const role = user ? JSON.parse(user).role : null;
+
   const erpFeatures = [
-    { 
-      icon: <ShoppingCart className="w-8 h-8" />, 
-      title: "POS System", 
-      desc: "Modern point-of-sale with offline mode, receipt printing, and fast checkout", 
+    {
+      icon: <ShoppingCart className="w-8 h-8" />,
+      title: "POS System",
+      desc: "Modern point-of-sale with offline mode, receipt printing, and fast checkout",
       link: "/erp/sales/pos",
       color: "from-primary to-secondary",
       stats: "Fast checkout",
-      highlight: true
+      highlight: true,
     },
-    { 
-      icon: <Package className="w-8 h-8" />, 
-      title: "Inventory", 
-      desc: "Real-time stock tracking, low inventory alerts, bundles management", 
+    {
+      icon: <Package className="w-8 h-8" />,
+      title: "Inventory",
+      desc: "Real-time stock tracking, low inventory alerts, bundles management",
       link: "/erp/dashboard/home",
       color: "from-info to-primary",
-      stats: "Real-time"
+      stats: "Real-time",
     },
-    { 
-      icon: <BarChart3 className="w-8 h-8" />, 
-      title: "Analytics", 
-      desc: "Advanced sales analytics, financial reports, and business insights", 
-      link: "/erp/dashboard/analytics",
+    {
+      icon: <BarChart3 className="w-8 h-8" />,
+      title: "Analytics",
+      desc: "Advanced sales analytics, financial reports, and business insights",
+      link: "/erp/accounting/expenses",
       color: "from-success to-info",
-      stats: "AI Insights"
+      stats: "AI Insights",
     },
-    { 
-      icon: <Users className="w-8 h-8" />, 
-      title: "CRM", 
-      desc: "Complete customer management with loyalty programs and segmentation", 
+    {
+      icon: <Users className="w-8 h-8" />,
+      title: "CRM",
+      desc: "Complete customer management with loyalty programs and segmentation",
       link: "/erp/sales/customers",
       color: "from-warning to-success",
-      stats: "360° View"
+      stats: "360° View",
     },
-    { 
-      icon: <CreditCard className="w-8 h-8" />, 
-      title: "Accounting", 
-      desc: "Full accounting suite, expense tracking, tax calculations, payroll", 
-      link: "/erp/accounting",
+    {
+      icon: <CreditCard className="w-8 h-8" />,
+      title: "Accounting",
+      desc: "Full accounting suite, expense tracking, tax calculations, payroll",
+      link: "/erp/accounting/dashboard",
       color: "from-primary to-info",
-      stats: "Auto Tax"
+      stats: "Auto Tax",
     },
-    { 
-      icon: <Receipt className="w-8 h-8" />, 
-      title: "Billing", 
-      desc: "Automated invoicing, recurring billing, payment tracking", 
+    {
+      icon: <Receipt className="w-8 h-8" />,
+      title: "Billing",
+      desc: "Automated invoicing, recurring billing, payment tracking",
       link: "/erp/dashboard/home",
       color: "from-info to-success",
-      stats: "Auto Invoice"
+      stats: "Auto Invoice",
     },
-    { 
-      icon: <Settings className="w-8 h-8" />, 
-      title: "Configuration", 
-      desc: "System settings, user roles, permissions, and custom workflows", 
-      link: "/erp/dashboard/home",
+    {
+      icon: <Settings className="w-8 h-8" />,
+      title: "Configuration",
+      desc: "System settings, user roles, permissions, and custom workflows",
+      link: "/erp/users",
       color: "from-gray-500 to-gray-700",
-      stats: "Flexible"
+      stats: "Flexible",
     },
-    { 
-      icon: <Database className="w-8 h-8" />, 
-      title: "Data Management", 
-      desc: "Import/export tools, automated backups, data migration", 
+    {
+      icon: <Database className="w-8 h-8" />,
+      title: "Data Management",
+      desc: "Import/export tools, automated backups, data migration",
       link: "/erp/dashboard/home",
       color: "from-secondary to-warning",
-      stats: "Secure"
+      stats: "Secure",
     },
   ];
 
@@ -100,50 +104,51 @@ export default function ERPLandingPage() {
     {
       icon: <Zap className="w-6 h-6" />,
       title: "Lightning Fast",
-      description: "Optimized for performance with instant load times"
+      description: "Optimized for performance with instant load times",
     },
     {
       icon: <Lock className="w-6 h-6" />,
       title: "Bank-Level Security",
-      description: "End-to-end encryption and GDPR compliance"
+      description: "End-to-end encryption and GDPR compliance",
     },
     {
       icon: <RefreshCw className="w-6 h-6" />,
       title: "Auto Updates",
-      description: "Always on the latest version with zero downtime"
+      description: "Always on the latest version with zero downtime",
     },
     {
       icon: <Cloud className="w-6 h-6" />,
       title: "Cloud & On-Premise",
-      description: "Choose your deployment method"
+      description: "Choose your deployment method",
     },
     {
       icon: <Building className="w-6 h-6" />,
       title: "Enterprise Ready",
-      description: "Scale from startup to enterprise seamlessly"
+      description: "Scale from startup to enterprise seamlessly",
     },
     {
       icon: <BarChart className="w-6 h-6" />,
       title: "Smart Insights",
-      description: "AI-powered business intelligence"
-    }
+      description: "AI-powered business intelligence",
+    },
   ];
 
   return (
     <div className="font-sans bg-gradient-to-b from-light/50 via-white to-light/30 dark:from-dark-bg dark:via-dark-card dark:to-dark-bg text-gray-900 dark:text-light min-h-screen">
-      
       {/* TOP NAV */}
       <TopNav />
 
       {/* HERO SECTION */}
       <section className="pt-28 pb-20 px-4 sm:px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 dark:from-dark-primary/5 dark:to-dark-secondary/5 -skew-y-6"></div>
-        
+
         <div className="max-w-6xl mx-auto relative">
           <div className="text-center">
             <div className="inline-flex items-center gap-2 bg-primary/10 dark:bg-dark-primary/20 text-primary dark:text-dark-primary rounded-full px-4 py-2 mb-6 animate-pulse border border-primary/20 dark:border-dark-primary/30">
               <Sparkles className="w-4 h-4" />
-              <span className="text-sm font-semibold">All-in-One ERP Platform</span>
+              <span className="text-sm font-semibold">
+                All-in-One ERP Platform
+              </span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
@@ -154,9 +159,11 @@ export default function ERPLandingPage() {
                 Your Business, Unified
               </span>
             </h1>
-            
+
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-10 px-4">
-              Streamline your entire business operations from sales and inventory to accounting and customer management – all in one powerful, intuitive ERP suite.
+              Streamline your entire business operations from sales and
+              inventory to accounting and customer management – all in one
+              powerful, intuitive ERP suite.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16">
@@ -180,16 +187,25 @@ export default function ERPLandingPage() {
                   </Link>
                 </>
               )}
-              
-              {isLoggedIn && (
-                <Link
-                  to="/erp/dashboard/home"
-                  className="btn-primary group px-8 py-4 flex items-center gap-3"
-                >
-                  <span>Go to Dashboard</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              )}
+
+              {isLoggedIn &&
+                (role === "Cashier" ? (
+                  <Link
+                    to="/erp/profile"
+                    className="btn-primary group px-8 py-4 flex items-center gap-3"
+                  >
+                    <span>Go to Dashboard</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                ) : (
+                  <Link
+                    to="/erp/dashboard/home"
+                    className="btn-primary group px-8 py-4 flex items-center gap-3"
+                  >
+                    <span>Go to Dashboard</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                ))}
             </div>
 
             {/* Preview Image/Placeholder */}
@@ -197,7 +213,9 @@ export default function ERPLandingPage() {
               <div className="aspect-video bg-gradient-to-r from-primary/20 via-info/20 to-secondary/20 dark:from-dark-primary/20 dark:via-dark-info/20 dark:to-dark-secondary/20 rounded-xl flex items-center justify-center">
                 <div className="text-center">
                   <BarChart3 className="w-20 h-20 mx-auto text-primary/40 dark:text-dark-primary/40 mb-4" />
-                  <p className="text-gray-500 dark:text-gray-400 font-medium">ERP Dashboard Preview</p>
+                  <p className="text-gray-500 dark:text-gray-400 font-medium">
+                    ERP Dashboard Preview
+                  </p>
                 </div>
               </div>
             </div>
@@ -210,7 +228,10 @@ export default function ERPLandingPage() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {benefits.map((benefit, index) => (
-              <div key={index} className="card p-6 hover:shadow-card-hover transition-all duration-300 group">
+              <div
+                key={index}
+                className="card p-6 hover:shadow-card-hover transition-all duration-300 group"
+              >
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 dark:from-dark-primary/20 dark:to-dark-secondary/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <div className="text-primary dark:text-dark-primary">
@@ -233,7 +254,10 @@ export default function ERPLandingPage() {
       </section>
 
       {/* ERP FEATURES */}
-      <section className="py-20 px-4 sm:px-6 bg-gradient-to-b from-white to-gray-50 dark:from-dark-bg dark:to-dark-card" id="modules">
+      <section
+        className="py-20 px-4 sm:px-6 bg-gradient-to-b from-white to-gray-50 dark:from-dark-bg dark:to-dark-card"
+        id="modules"
+      >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-primary/10 dark:bg-dark-primary/20 text-primary dark:text-dark-primary rounded-full px-4 py-2 mb-4">
@@ -244,7 +268,8 @@ export default function ERPLandingPage() {
               Everything Your Business Needs
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Powerful, integrated tools that work together seamlessly to streamline your operations
+              Powerful, integrated tools that work together seamlessly to
+              streamline your operations
             </p>
           </div>
 
@@ -254,16 +279,18 @@ export default function ERPLandingPage() {
                 key={index}
                 to={feature.link}
                 className={`card group relative overflow-hidden hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 border ${
-                  feature.highlight 
-                    ? 'border-primary/30 dark:border-dark-primary/50' 
-                    : 'border-gray-100 dark:border-gray-800'
+                  feature.highlight
+                    ? "border-primary/30 dark:border-dark-primary/50"
+                    : "border-gray-100 dark:border-gray-800"
                 }`}
               >
                 <div className="p-6">
-                  <div className={`inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br ${feature.color} p-3 text-white mb-6`}>
+                  <div
+                    className={`inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br ${feature.color} p-3 text-white mb-6`}
+                  >
                     {feature.icon}
                   </div>
-                  
+
                   <div className="mb-4">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary dark:group-hover:text-dark-primary transition-colors">
@@ -279,7 +306,7 @@ export default function ERPLandingPage() {
                       {feature.desc}
                     </p>
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
                       {feature.stats}
@@ -304,19 +331,25 @@ export default function ERPLandingPage() {
               Ready to Transform Your Business?
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-              Join thousands of businesses that have streamlined their operations with AppSales ERP
+              Join thousands of businesses that have streamlined their
+              operations with AppSales ERP
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                to={isLoggedIn ? "/erp/dashboard/home" : "/erp/auth/register"}
+                to={
+                  !isLoggedIn
+                    ? "/erp/auth/register" // not logged in -> go to register
+                    : role === "Cashier"
+                      ? "/erp/profile" // Cashier -> go to profile
+                      : "/erp/dashboard/home" // Other logged-in roles -> dashboard
+                }
                 className="btn-primary px-8 py-4 text-lg font-bold"
               >
-                {isLoggedIn ? 'Go to Dashboard' : 'Create New Account'}
+                {isLoggedIn ? "Go to Dashboard" : "Create New Account"}
               </Link>
-             
             </div>
-            
+
             <p className="text-gray-500 dark:text-gray-400 text-sm mt-6">
               No credit card required • 30-day free trial • Cancel anytime
             </p>
