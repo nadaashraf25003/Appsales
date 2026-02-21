@@ -25,3 +25,10 @@ Appsales ERP is a comprehensive system designed to manage **sales, branches, cus
 3. **Customers Module** – Track customers, order history, and balances.
 4. **Reports Module** – Generate sales summaries, branch performance, and financial reports.
 5. **User & Authentication Module** – Manage users, permissions, and access control.
+
+--- 
+
+## 🎥 Project Demo Video
+
+Watch the full explanation and live demo of Appsales ERP here:
+👉 (https://drive.google.com/file/d/19AZ-aJ3gFe8SrwBkVTNHubuZ1uX7cwEK/view?usp=sharing)
